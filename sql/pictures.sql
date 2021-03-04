@@ -1,0 +1,7 @@
+CREATE TABLE pictures (
+  ID SERIAL PRIMARY KEY,
+  owner_id INT NOT NULL,
+  filename TEXT, title TEXT NOT NULL,
+  url TEXT NOT NULL,
+  created_at TIMESTAMP NOT NULL DEFAULT NOW()
+);

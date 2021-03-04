@@ -1,0 +1,20 @@
+{
+  "name": "react_dashboard_and_api_sample",
+  "version": "0.0.1",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "install-all": "cd web; npm install; cd ../api; npm install; cd .."
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/react-crocodic/react_dashboard_and_api_monorepo_starter.git"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/react-crocodic/react_dashboard_and_api_monorepo_starter/issues"
+  },
+  "homepage": "https://github.com/react-crocodic/react_dashboard_and_api_monorepo_starter#readme"
+}

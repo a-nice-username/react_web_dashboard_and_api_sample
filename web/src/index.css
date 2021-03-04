@@ -1,0 +1,247 @@
+body {
+  margin: 0;
+}
+
+div {
+  font-family: Verdana, Geneva, Tahoma, sans-serif;
+}
+
+h2 {
+  margin: 0;
+}
+
+a:hover {
+  opacity: 0.6;
+}
+
+.container {
+  align-items: center;
+  background-color: gainsboro;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  height: 100vh;
+  width: 100vw;
+}
+
+.dialog-box-container {
+  background-color: rgb(240, 240, 240);
+  border-radius: 5px;
+  display: flex;
+  flex-direction: column;
+  padding: 20px;
+  width: 250px;
+  max-width: calc(100vw - 80px);
+}
+
+.dialog-box-title {
+  margin-bottom: 15px;
+}
+
+.dialog-box-input {
+  margin-top: 5px;
+}
+
+.dialog-box-submit-button {
+  align-items: center;
+  align-self: flex-end;
+  border-radius: 5px;
+  color: white;
+  display: flex;
+  font-weight: bold;
+  margin-top: 20px;
+  padding-bottom: 7.5px;
+  padding-left: 10px;
+  padding-right: 10px;
+  padding-top: 7.5px;
+  text-decoration-line: none;
+}
+
+.question-line {
+  margin-top: 20px;
+  max-width: calc(100vw - 40px);
+  text-align: center;
+}
+
+.home-top-nav-container {
+  align-items: center;
+  background-color: white;
+  display: flex;
+  height: 60px;
+  justify-content: space-between;
+  left: 0;
+  padding-left: 20px;
+  padding-right: 20px;
+  position: fixed;
+  right: 0;
+  top: 0;
+}
+
+.home-top-nav-right-options-container {
+  align-items: center;
+  display: flex;
+}
+
+.home-top-nav-right-option-button {
+  background-color: violet;
+  border-radius: 5px;
+  color: white;
+  font-weight: bold;
+  margin-left: 10px;
+  padding-bottom: 7.5px;
+  padding-left: 10px;
+  padding-right: 10px;
+  padding-top: 7.5px;
+  text-decoration-line: none;
+}
+
+.home-top-nav-bar-button {
+  color: black;
+  display: none;
+  font-size: 30px;
+  margin-left: 10px;
+}
+
+.home-pictures-container {
+  align-items: center;
+  background-color: gainsboro;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  padding-top: 60px;
+  min-height: calc(100vh - 80px);
+  min-width: 100vw;
+  padding-bottom: 20px
+}
+
+.home-picture-message {
+  align-items: center;
+  color: gray;
+  display: flex;
+}
+
+.home-picture-container {
+  background-color: white;
+  border-radius: 5px;
+  margin-left: 20px;
+  margin-right: 20px;
+  margin-top: 20px;
+  padding: 20px;
+}
+
+.home-picture {
+  width: calc(100vw - 80px);
+  margin-bottom: 10px;
+  max-width: 275px;
+}
+
+.modal-container {
+  align-items: center;
+  display: flex;
+  position: fixed;
+  top: 0;
+  left: 0;
+  bottom: 0;
+  right: 0;
+  justify-content: center;
+}
+
+.modal-background {
+  align-items: center;
+  background-color: rgba(0, 0, 0, 0.75);
+  display: flex;
+  justify-content: center;
+  position: absolute;
+  top: 0;
+  left: 0;
+  bottom: 0;
+  right: 0;
+  z-index: -1;
+}
+
+.modal-dialog-box-container {
+  display: flex;
+  flex-direction: column;
+  background-color: rgb(245, 245, 245);
+  border-radius: 5px;
+  padding: 20px;
+  margin-left: 20px;
+  margin-right: 20px;
+  max-width: 275px;
+  width: 100%;
+}
+
+.modal-dialog-box-title {
+  margin-bottom: 10px;
+}
+
+.modal-dialog-box-submit-button {
+  align-items: center;
+  border-radius: 5px;
+  color: white;
+  display: flex;
+  font-weight: bold;
+  justify-content: center;
+  padding-bottom: 7.5px;
+  padding-left: 10px;
+  padding-right: 10px;
+  padding-top: 7.5px;
+  text-align: center;
+  text-decoration-line: none;
+}
+
+.add-a-picture-dialog-box-picture-picker {
+  display: none;
+}
+
+.add-a-picture-dialog-box-picture-field-container {
+  max-height: 275px;
+  overflow: hidden;
+  text-decoration-line: none;
+  max-width: 275px;
+  margin-top: 10px;
+  width: 100%;
+}
+
+.add-a-picture-dialog-box-picture-field-picture {
+  width: 100%;
+}
+
+.add-a-picture-dialog-box-picture-field-placeholder {
+  align-items: center;
+  background-color: darkgray;
+  color: dimgray;
+  display: flex;
+  height: 275px;
+  justify-content: center;
+  width: 100%;
+}
+
+.add-a-picture-dialog-box-input {
+  margin-top: 10px;
+}
+
+.loader {
+  border: 3px solid darkgray;
+  border-top: 3px solid white;
+  border-radius: 50%;
+  width: 10px;
+  height: 10px;
+  margin-right: 5px;
+  animation: spin 0.75s linear infinite;
+}
+
+@keyframes spin {
+  0% { transform: rotate(0deg); }
+  100% { transform: rotate(360deg); }
+}
+
+@media screen and (max-width: 525px) {
+  .home-top-nav-right-option-button {
+    display: none;
+  }
+
+  .home-top-nav-bar-button {
+    display: initial;
+  }
+}
