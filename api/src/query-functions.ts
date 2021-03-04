@@ -7,12 +7,14 @@ import giveResponse from './helpers/give-response'
 import * as fs from 'fs-extra'
 import * as path from 'path'
 
+const { env } = process
+
 const pool = new Pool({
-  user: process.env['DB_USER'],
-  host: process.env['DB_HOST'],
-  database: process.env['DB_NAME'],
-  password: process.env['DB_PASSWORD'],
-  port: Number(process.env['DB_PORT'])
+  user: env['DB_USER'],
+  host: env['DB_HOST'],
+  database: env['DB_NAME'],
+  password: env['DB_PASSWORD'],
+  port: Number(env['DB_PORT'])
 })
 
 const root = (req: Request, res: Response) => {
