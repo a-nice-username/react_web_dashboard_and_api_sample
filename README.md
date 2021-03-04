@@ -3,6 +3,8 @@
 ## Preparation
 
 - ```npm run install-all``` to install all projects dependencies
+- Change directory to **web** folder, then create ```.env``` file with ```.env.example``` pattern
+- Change directory to **api** folder, then create ```.env``` file with ```.env.example``` pattern
 
 ## Running Locally
 
