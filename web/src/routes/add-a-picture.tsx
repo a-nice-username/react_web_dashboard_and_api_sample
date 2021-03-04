@@ -1,6 +1,6 @@
 import { useEffect, useState } from 'react'
 
-import { API } from '../references'
+import { API } from '../helpers/custom-fetch'
 
 type FileType = {
   name: string,
@@ -118,51 +118,31 @@ function AddAPicture(props: PropsType) {
     :
     null
 
-  function addAPicture() {
+  async function addAPicture() {
     const { id } = JSON.parse(localStorage.getItem('LOGIN_DATA')!)
 
-    const formData =  new FormData()
-
-    formData.append('owner_id', id)
-    formData.append('title', title)
-    formData.append('picture', picture!.file)
-
     setIsTryingSubmit(true)
-    
-    fetch(
-      API('/add-a-picture'),
-      {
-        method: 'POST',
-        headers: {
-          Accept: 'application/json'
-        },
-        body: formData
-      }
-    )
-    .then(res => res.text())
-    .then(resText => {
-      setIsTryingSubmit(false)
 
-      if(resText[0] == '{') {
-        const resJSON = JSON.parse(resText)
+    const res = await API.AddAPicture({
+      owner_id: id,
+      title,
+      picture: picture!.file
+    })
 
-        if(resJSON['status'] == 'success') {
-          setPicture(undefined)
-          setTitle('')
-            
-          window.location.href = '/'
-        } else {
-          alert(resJSON['info'])
-        }
+    setIsTryingSubmit(false)
+
+    if(res.JSON) {
+      if(res.JSON['status'] == 'success') {
+        setPicture(undefined)
+        setTitle('')
+          
+        window.location.href = '/'
       } else {
-        alert(resText)
+        alert(res.JSON['info'])
       }
-    })
-    .catch(err => {
-      setIsTryingSubmit(false)
-
-      alert(err.toString())
-    })
+    } else {
+      alert(res.Text || res.error.toString())
+    }
   }
 }
 

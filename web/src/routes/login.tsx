@@ -2,7 +2,7 @@ import { useEffect, useState } from 'react'
 
 import { Link } from 'react-router-dom'
 
-import { API } from '../references'
+import { API } from '../helpers/custom-fetch'
 
 function Login() {
   const [ username, setUsername ] = useState('')
@@ -83,46 +83,27 @@ function Login() {
     }
   }
 
-  function login() {
+  async function login() {
     setIsTryingLogin(true)
 
-    fetch(
-      API('/login'),
-      {
-        method: 'POST',
-        headers: {
-          'Accept': 'application/json',
-          'Content-Type': 'application/json',
-        },
-        body: JSON.stringify({
-          username,
-          password
-        })
-      }
-    )
-    .then(res => res.text())
-    .then(resText => {
-      setIsTryingLogin(false)
+    const res = await API.Login({
+      username,
+      password
+    })
+    
+    setIsTryingLogin(false)
+      
+    if(res.JSON) {
+      if(res.JSON['status'] == 'success') {
+        localStorage.setItem('LOGIN_DATA', JSON.stringify(res.JSON['data']))
 
-      if(resText[0] == '{') {
-        const resJSON = JSON.parse(resText)
-
-        if(resJSON['status'] == 'success') {
-          localStorage.setItem('LOGIN_DATA', JSON.stringify(resJSON['data']))
-
-          window.location.href = '/'
-        } else {
-          alert(resJSON['info'])
-        }
+        window.location.href = '/'
       } else {
-        alert(resText)
+        alert(res.JSON['info'])
       }
-    })
-    .catch(err => {
-      setIsTryingLogin(false)
-
-      alert(err.toString())
-    })
+    } else {
+      alert(res.Text || res.error.toString())
+    }
   }
 }
 

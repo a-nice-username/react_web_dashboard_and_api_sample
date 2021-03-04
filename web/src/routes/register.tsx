@@ -2,7 +2,7 @@ import { useEffect, useState } from 'react'
 
 import { Link } from 'react-router-dom'
 
-import { API } from '../references'
+import { API } from '../helpers/custom-fetch'
 
 function Register() {
   const [ username, setUsername ] = useState('')
@@ -92,7 +92,7 @@ function Register() {
     }
   }
 
-  function register() {
+  async function register() {
     if(password != confirmPassword) {
       alert('Password dan confirm password tidak sama')
 
@@ -101,41 +101,22 @@ function Register() {
 
     setIsTryingRegister(true)
 
-    fetch(
-      API('/register'),
-      {
-        method: 'POST',
-        headers: {
-          'Accept': 'application/json',
-          'Content-Type': 'application/json',
-        },
-        body: JSON.stringify({
-          username,
-          password
-        })
-      }
-    )
-    .then(res => res.text())
-    .then(resText => {
-      setIsTryingRegister(false)
-
-      if(resText[0] == '{') {
-        const resJSON = JSON.parse(resText)
-
-        alert(resJSON['info'])
-
-        if(resJSON['status'] == 'success') {
-          window.location.href = '/login'
-        }
-      } else {
-        alert(resText)
-      }
+    const res = await API.Register({
+      username,
+      password
     })
-    .catch(err => {
-      setIsTryingRegister(false)
+    
+    setIsTryingRegister(false)
 
-      alert(err.toString())
-    })
+    if(res.JSON) {
+      alert(res.JSON['info'])
+
+      if(res.JSON['status'] == 'success') {
+        window.location.href = '/login'
+      }
+    } else {
+      alert(res.Text || res.error.toString())
+    }
   }
 }
 

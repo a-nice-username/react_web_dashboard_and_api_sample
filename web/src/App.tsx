@@ -1,13 +1,18 @@
 import React from 'react'
 
-import { BrowserRouter as Router, Route, Switch, useLocation } from 'react-router-dom'
 import Helmet from 'react-helmet'
+import { BrowserRouter as Router, Route, Switch, useLocation } from 'react-router-dom'
+import { Location } from 'history'
 
 import Login from './routes/login'
 import Register from './routes/register'
 import Home from './routes/home'
 import Options from './routes/options'
 import AddPicture from './routes/add-a-picture'
+
+type LocationStateType = {
+  background?: Location
+}
 
 function Main() {
   return (
@@ -17,10 +22,6 @@ function Main() {
   )
 }
 
-type LocationStateType = {
-  background?: any
-}
-
 function RouterContent() {
   const location = useLocation<LocationStateType>()
   
@@ -28,7 +29,9 @@ function RouterContent() {
 
   return (
     <>
-      <Switch location = {background || location}>
+      <Switch
+        location = {background || location}
+      >
         <Route
           exact path = '/'
         >
@@ -61,11 +64,11 @@ function RouterContent() {
       </Switch>
 
       <AddPicture
-        isVisible = {background && location.pathname == '/add-a-picture'}
+        isVisible = {background != undefined && location.pathname == '/add-a-picture'}
       />
 
       <Options
-        isVisible = {background && location.pathname == '/options'}
+        isVisible = {background != undefined && location.pathname == '/options'}
       />
     </>
   )

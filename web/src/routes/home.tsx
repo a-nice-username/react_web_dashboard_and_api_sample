@@ -6,7 +6,8 @@ import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { library } from '@fortawesome/fontawesome-svg-core'
 import { faBars } from '@fortawesome/free-solid-svg-icons'
 
-import { API, getLocation, setLocation } from '../references'
+import { getLocation, setLocation } from '../references'
+import { API } from '../helpers/custom-fetch'
 
 library.add(faBars)
 
@@ -147,35 +148,28 @@ function Home() {
     loadPictures()
   }
 
-  function loadPictures() {
-    setIsLoadingPictures(true)
-
+  async function loadPictures() {
     setPictures([])
 
+    setIsLoadingPictures(true)
+
     const { id } = JSON.parse(localStorage.getItem('LOGIN_DATA')!)
+
+    const res =  await API.GetPictures({
+      id
+    })
     
-    fetch(`${API('/get-pictures')}?id=${id}`)
-    .then(res => res.text())
-    .then(resText => {
-      setIsLoadingPictures(false)
+    setIsLoadingPictures(false)
 
-      if(resText[0] == '{') {
-        const resJSON = JSON.parse(resText)
-
-        if(resJSON['status'] == 'success') {
-          setPictures(resJSON['data'])
-        } else {
-          alert(resJSON['info'])
-        }
+    if(res.JSON) {
+      if(res.JSON['status'] == 'success') {
+        setPictures(res.JSON['data'])
       } else {
-        console.log(resText)
+        alert(res.JSON['info'])
       }
-    })
-    .catch(err => {
-      setIsLoadingPictures(false)
-
-      console.error(err.toString())
-    })
+    } else {
+      console.log(res.Text || res.error.toString())
+    }
   }
 
   function logout() {
