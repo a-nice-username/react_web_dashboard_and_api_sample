@@ -90,15 +90,14 @@ function Login() {
     setIsTryingLogin(false)
       
     if(res.JSON) {
-      alert(res.JSON['info'])
-      
-      // if(res.JSON['status'] == 'success') {
-      //   localStorage.setItem('LOGIN_DATA', JSON.stringify(res.JSON['data']))
-
-      //   window.location.href = '/'
-      // } else {
+      if(res.JSON['status'] == 'success') {
+          localStorage.setItem('LOGIN_DATA', JSON.stringify(res.JSON['data']))
         
-      // }
+          window.location.href = '/'
+        } else {
+          
+        alert(res.JSON['info'])
+      }
     } else {
       alert(res.Text || res.error.toString())
     }

@@ -1,5 +1,3 @@
-import React from 'react'
-
 import Helmet from 'react-helmet'
 import { BrowserRouter as Router, Route, Switch, useLocation } from 'react-router-dom'
 import { Location } from 'history'

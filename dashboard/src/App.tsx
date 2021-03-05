@@ -1,14 +1,23 @@
-import React from 'react'
-
 import Helmet from 'react-helmet'
 import { BrowserRouter as Router, Route, Switch, useLocation } from 'react-router-dom'
 
+import Home from './routes/home'
 import Login from './routes/login'
 
 function Main() {
   return (
     <Router>
       <Switch>
+        <Route
+          exact path = '/'
+        >
+          <Helmet
+            title = 'Dashboard | Home'
+          />
+
+          <Home />
+        </Route>
+
         <Route
           path = '/login'
         >
