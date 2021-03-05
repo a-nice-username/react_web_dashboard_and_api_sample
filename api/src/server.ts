@@ -10,7 +10,7 @@ import * as path from 'path'
 import db from './query-functions'
 
 const app = express()
-const port = process.env.PORT || 4000
+const port = process.env.PORT
 
 const dir = path.join(__dirname, '../public')
 
@@ -20,9 +20,12 @@ app.use(formidable())
 app.use('/public', express.static(dir))
 
 app.get('/', db.root)
-app.post('/login', db.login)
-app.post('/register', db.register)
-app.get('/get-pictures', db.getPictures)
-app.post('/add-a-picture', db.addAPicture)
+
+app.post('/frontend/login', db.frontend.login)
+app.post('/frontend/register', db.frontend.register)
+app.get('/frontend/get-pictures', db.frontend.getPictures)
+app.post('/frontend/add-a-picture', db.frontend.addAPicture)
+
+app.post('/dashboard/login', db.dashboard.login)
 
 app.listen(port, () => console.log(`App running on port ${port}.`))

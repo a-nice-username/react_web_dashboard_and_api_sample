@@ -1,0 +1,73 @@
+body {
+  margin: 0;
+}
+
+div {
+  font-family: Verdana, Geneva, Tahoma, sans-serif;
+}
+
+h2 {
+  margin: 0;
+}
+
+a:hover {
+  opacity: 0.6;
+}
+
+.container {
+  align-items: center;
+  background-color: gainsboro;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  height: 100vh;
+  width: 100vw;
+}
+
+.dialog-box-container {
+  background-color: rgb(240, 240, 240);
+  border-radius: 5px;
+  display: flex;
+  flex-direction: column;
+  padding: 20px;
+  width: 250px;
+  max-width: calc(100vw - 80px);
+}
+
+.dialog-box-title {
+  margin-bottom: 15px;
+}
+
+.dialog-box-input {
+  margin-top: 5px;
+}
+
+.dialog-box-submit-button {
+  align-items: center;
+  align-self: flex-end;
+  border-radius: 5px;
+  color: white;
+  display: flex;
+  font-weight: bold;
+  margin-top: 20px;
+  padding-bottom: 7.5px;
+  padding-left: 10px;
+  padding-right: 10px;
+  padding-top: 7.5px;
+  text-decoration-line: none;
+}
+
+.loader {
+  border: 3px solid darkgray;
+  border-top: 3px solid white;
+  border-radius: 50%;
+  width: 10px;
+  height: 10px;
+  margin-right: 5px;
+  animation: spin 0.75s linear infinite;
+}
+
+@keyframes spin {
+  0% { transform: rotate(0deg); }
+  100% { transform: rotate(360deg); }
+}

@@ -23,6 +23,6 @@
 *yarn-debug.log*
 *yarn-error.log*
 
-/api/public
+*.eslintcache
 
-/web/.eslintcache
+/api/public

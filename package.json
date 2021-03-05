@@ -4,7 +4,7 @@
   "description": "",
   "main": "index.js",
   "scripts": {
-    "install-all": "cd web; npm install; cd ../api; npm install; cd .."
+    "install-all": "cd web; npm i; cd ../dashboard; npm i; cd ../api; npm i; cd .."
   },
   "repository": {
     "type": "git",

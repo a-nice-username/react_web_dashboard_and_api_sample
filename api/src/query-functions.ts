@@ -264,10 +264,60 @@ const addAPicture = (req: Request, res: Response) => {
   )
 }
 
+const dashboardLogin = (req: Request, res: Response) => {
+  let data = {}
+
+  const { username, password } = req.fields
+
+  if (!username) {
+    giveResponse(res, 'bad_request', data, "Parameter 'username' required")
+
+    return
+  }
+
+  if (!password) {
+    giveResponse(res, 'bad_request', data, "Parameter 'password' required")
+
+    return
+  }
+
+  pool.query(
+    `SELECT * FROM administrators WHERE username = $1`,
+    [username],
+    (err, results) => {
+      if(err) {
+        giveResponse(res, 'bad_request', data, `${err.name} : ${err.message}`)
+
+        return
+      }
+
+      if(results.rows.length > 0) {
+        if(password == results.rows[0].password) {
+          data = {
+            ...results.rows[0],
+            password: undefined
+          }
+
+          giveResponse(res, 'success', data, 'Sukses login')
+        } else {
+          giveResponse(res, 'bad_request', data, 'Password salah')
+        }
+      } else {
+        giveResponse(res, 'not_found', data, `User dengan username '${username}' tidak ditemukan`)
+      }
+    }
+  )
+}
+
 export default {
   root,
-  login,
-  register,
-  getPictures,
-  addAPicture
+  frontend: {
+    login,
+    register,
+    getPictures,
+    addAPicture
+  },
+  dashboard: {
+    login: dashboardLogin
+  }
 }
