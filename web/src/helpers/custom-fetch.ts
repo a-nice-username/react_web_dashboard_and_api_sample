@@ -37,8 +37,6 @@ export const CustomFetch = async(
         body = new FormData()
 
         for(const key in params) {
-          console.log(key)
-
           if(params.hasOwnProperty(key)) {
             body.append(key, params[key])
           }
