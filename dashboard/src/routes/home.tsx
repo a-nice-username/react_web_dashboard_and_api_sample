@@ -1,7 +1,10 @@
 import { useEffect, useState } from 'react'
 
+import { Redirect } from 'react-router'
+
 function Home() {
   const [ selectedSection, setSelectedSection ] = useState<'dashboard' | 'accounts' | 'pictures' | 'registerAnAccount'>('dashboard')
+  const [ isAlreadyLogout, setIsAlreadyLogout ] = useState(false)
 
   useEffect(() => {
     handleIfNotAlreadyLoggedIn()
@@ -76,6 +79,13 @@ function Home() {
           </a>
         </div>
       </div>
+
+      {
+        isAlreadyLogout &&
+          <Redirect
+            to = '/login'
+          />
+      }
     </div>
   )
 
@@ -83,7 +93,7 @@ function Home() {
     const loginData = localStorage.getItem('LOGIN_DATA')
 
     if(loginData == null) {
-      window.location.href = '/login'
+      setIsAlreadyLogout(true)
 
       return
     }
@@ -92,42 +102,8 @@ function Home() {
   function logout() {
     localStorage.removeItem('LOGIN_DATA')
 
-    window.location.href = '/login'
+    setIsAlreadyLogout(true)
   }
 }
 
 export default Home
-
-{/* <h2
-  style = {{
-    display: 'flex',
-    flexWrap: 'wrap',
-    justifyContent: 'center',
-    marginLeft: 5,
-    marginRight: 5,
-    textAlign: 'center'
-  }}
->
-  Pictures App
-  
-  <div
-    style = {{
-      color: 'deepskyblue',
-      marginLeft: 5,
-      marginRight: 5
-    }}
-  >
-    {'| Admin'}
-  </div>
-</h2>
-
-<a
-  href = 'javascript:void(0)'
-  onClick = {logout}
-  style = {{
-    marginTop: 20,
-    textDecorationLine: 'none'
-  }}
->
-  Logout
-</a> */}

@@ -1,11 +1,14 @@
 import { useEffect, useState } from 'react'
 
+import { Redirect } from 'react-router'
+
 import { API } from '../helpers/custom-fetch'
 
 function Login() {
   const [ username, setUsername ] = useState('')
   const [ password, setPassword ] = useState('')
   const [ isTryingLogin, setIsTryingLogin ] = useState(false)
+  const [ isAlreadyLogin, setIsAlreadyLogin ] = useState(false)
 
   useEffect(() => {
     handleIfAlreadyLoggedIn()
@@ -15,7 +18,7 @@ function Login() {
     <div
       className = 'container'
     >
-      <div
+      <form
         className = 'dialog-box-container'
       >
         <h2
@@ -51,12 +54,13 @@ function Login() {
 
         <a
           className = 'dialog-box-submit-button'
-          href="javascript:void(0)"
+          href = "javascript:void(0)"
           onClick = {login}
           style = {{
             backgroundColor: !isTryingLogin && username.trim() != '' && password != '' ? 'green' : 'dimgray',
             pointerEvents: !isTryingLogin && username.trim() != '' && password != '' ? 'auto' : 'none'
           }}
+          type = "submit"
         >
           <div
             className = 'loader'
@@ -67,7 +71,12 @@ function Login() {
 
           Login
         </a>
-      </div>
+      </form>
+
+      {
+        isAlreadyLogin &&
+          <Redirect to = ''/>
+      }
     </div>
   )
   
@@ -75,7 +84,7 @@ function Login() {
     const loginData = localStorage.getItem('LOGIN_DATA')
 
     if(loginData != null) {
-      window.location.href = '/'
+      setIsAlreadyLogin(true)
     }
   }
 
@@ -91,11 +100,10 @@ function Login() {
       
     if(res.JSON) {
       if(res.JSON['status'] == 'success') {
-          localStorage.setItem('LOGIN_DATA', JSON.stringify(res.JSON['data']))
+        localStorage.setItem('LOGIN_DATA', JSON.stringify(res.JSON['data']))
         
-          window.location.href = '/'
-        } else {
-          
+        setIsAlreadyLogin(true)
+      } else {
         alert(res.JSON['info'])
       }
     } else {
