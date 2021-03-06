@@ -1,6 +1,6 @@
 import { useEffect, useState } from 'react'
 
-import { useLocation, useHistory } from 'react-router-dom'
+import { useLocation, useHistory, Redirect } from 'react-router-dom'
 
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { library } from '@fortawesome/fontawesome-svg-core'
@@ -25,6 +25,7 @@ function Home() {
 
   const [ isLoadingPictures, setIsLoadingPictures ] = useState(false)
   const [ pictures, setPictures ] = useState<PictureType[]>([])
+  const [ isAlreadyLogout, setIsAlreadyLogout ] = useState(false)
 
   useEffect(() => {
     handleIfNotAlreadyLoggedIn()
@@ -130,6 +131,13 @@ function Home() {
                 ))
             )
         }
+
+        {
+          isAlreadyLogout &&
+            <Redirect
+              to = '/login'
+            />
+        }
       </div>
     </>
   )
@@ -138,7 +146,7 @@ function Home() {
     const loginData = localStorage.getItem('LOGIN_DATA')
 
     if(loginData == null) {
-      window.location.href = '/login'
+      setIsAlreadyLogout(true)
 
       setLocation(undefined)
 
@@ -177,7 +185,7 @@ function Home() {
 
     localStorage.removeItem('LOGIN_DATA')
 
-    window.location.href = '/login'
+    setIsAlreadyLogout(true)
   }
 }
 

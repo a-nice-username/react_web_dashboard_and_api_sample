@@ -1,34 +1,30 @@
-import Helmet from 'react-helmet'
 import { BrowserRouter as Router, Route, Switch } from 'react-router-dom'
+import Helmet from 'react-helmet'
 
 import Home from './routes/home'
 import Login from './routes/login'
 
 function Main() {
   return (
-    <Router>
-      <Switch>
-        <Route
-          exact path = '/'
-        >
-          <Helmet
-            title = 'Dashboard | Home'
+    <>
+      <Router>
+        <Switch>
+          <Route
+            exact path = '/'
+            component = {Home}
           />
 
-          <Home />
-        </Route>
-
-        <Route
-          path = '/login'
-        >
-          <Helmet
-            title = 'Dashboard | Login'
+          <Route
+            path = '/login'
+            component = {Login}
           />
+        </Switch>
+      </Router>
 
-          <Login />
-        </Route>
-      </Switch>
-    </Router>
+      <Helmet
+        title = 'Dashboard Pictures App'
+      />
+    </>
   )
 }
 

@@ -75,7 +75,9 @@ function Login() {
 
       {
         isAlreadyLogin &&
-          <Redirect to = ''/>
+          <Redirect
+            to = ''
+          />
       }
     </div>
   )

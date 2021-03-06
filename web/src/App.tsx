@@ -1,5 +1,5 @@
-import Helmet from 'react-helmet'
 import { BrowserRouter as Router, Route, Switch, useLocation } from 'react-router-dom'
+import Helmet from 'react-helmet'
 import { Location } from 'history'
 
 import Login from './routes/login'
@@ -14,9 +14,15 @@ type LocationStateType = {
 
 function Main() {
   return (
-    <Router>
-      <RouterContent />
-    </Router>
+    <>
+      <Router>
+        <RouterContent />
+      </Router>
+
+      <Helmet
+        title = 'Pictures App'
+      />
+    </>
   )
 }
 
@@ -32,33 +38,18 @@ function RouterContent() {
       >
         <Route
           exact path = '/'
-        >
-          <Helmet
-            title = 'Home'
-          />
-
-          <Home />
-        </Route>
+          component = {Home}
+        />
 
         <Route
           path = '/login'
-        >
-          <Helmet
-            title = 'Login'
-          />
-
-          <Login />
-        </Route>
+          component = {Login}
+        />
 
         <Route
           path = '/register'
-        >
-          <Helmet
-            title = 'Register'
-          />
-
-          <Register />
-        </Route>
+          component = {Register}
+        />
       </Switch>
 
       <AddPicture

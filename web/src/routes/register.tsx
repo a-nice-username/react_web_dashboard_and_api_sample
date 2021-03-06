@@ -1,6 +1,6 @@
 import { useEffect, useState } from 'react'
 
-import { Link } from 'react-router-dom'
+import { Link, Redirect } from 'react-router-dom'
 
 import { API } from '../helpers/custom-fetch'
 
@@ -9,6 +9,7 @@ function Register() {
   const [ password, setPassword ] = useState('')
   const [ confirmPassword, setConfirmPassword ] = useState('')
   const [ isTryingRegister, setIsTryingRegister ] = useState(false)
+  const [ isAlreadyLogin, setIsAlreadyLogin ] = useState(false)
 
   useEffect(() => {
     handleIfAlreadyLoggedIn()
@@ -81,6 +82,13 @@ function Register() {
           Login
         </Link>
       </div>
+
+      {
+        isAlreadyLogin &&
+          <Redirect
+            to = '/'
+          />
+      }
     </div>
   )
   
@@ -88,7 +96,7 @@ function Register() {
     const loginData = localStorage.getItem('LOGIN_DATA')
 
     if(loginData != null) {
-      window.location.href = '/'
+      setIsAlreadyLogin(true)
     }
   }
 
