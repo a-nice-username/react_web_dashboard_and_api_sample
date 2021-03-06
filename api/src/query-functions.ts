@@ -41,7 +41,7 @@ const login = (req: Request, res: Response) => {
   }
 
   pool.query(
-    `SELECT * FROM users WHERE username = $1`,
+    `SELECT * FROM accounts WHERE username = $1`,
     [username],
     (err, results) => {
       if(err) {
@@ -92,7 +92,7 @@ const register = (req: Request, res: Response) => {
   }
 
   pool.query(
-    `SELECT * FROM users WHERE username = $1`,
+    `SELECT * FROM accounts WHERE username = $1`,
     [username],
     (err, results) => {
       if(err) {
@@ -105,7 +105,7 @@ const register = (req: Request, res: Response) => {
         giveResponse(res, 'bad_request', data, `Maaf username '${username}' sudah dipakai, mohon gunakan username yang lain`)
       } else {
         pool.query(
-          `INSERT INTO users (username, password) VALUES ($1, $2)`,
+          `INSERT INTO accounts (username, password) VALUES ($1, $2)`,
           [username, password],
           (err, results) => {
             if(err) {
@@ -134,7 +134,7 @@ const getPictures = (req: Request, res: Response) => {
   }
 
   pool.query(
-    `SELECT * FROM users WHERE id = $1`,
+    `SELECT * FROM accounts WHERE id = $1`,
     [id],
     (err, results) => {
       if(err) {
@@ -198,7 +198,7 @@ const addAPicture = (req: Request, res: Response) => {
   const newFilePath = path.join(__dirname, '../') + 'public/images/' + newFileName
 
   pool.query(
-    `SELECT * FROM users WHERE id = $1`,
+    `SELECT * FROM accounts WHERE id = $1`,
     [owner_id],
     (err, results) => {
       if(err) {
@@ -282,7 +282,7 @@ const dashboardLogin = (req: Request, res: Response) => {
   }
 
   pool.query(
-    `SELECT * FROM administrators WHERE username = $1`,
+    `SELECT * FROM accounts WHERE username = $1 AND role = 'admin'`,
     [username],
     (err, results) => {
       if(err) {
