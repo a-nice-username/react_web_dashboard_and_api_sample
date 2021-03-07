@@ -2,7 +2,8 @@ import { BrowserRouter as Router, Route, Switch } from 'react-router-dom'
 import Helmet from 'react-helmet'
 
 import Home from './routes/home'
-import Accounts from './routes/accounts'
+import Users from './routes/users'
+import Administrators from './routes/administrators'
 import Pictures from './routes/pictures'
 import RegisterAnAccount from './routes/register-an-account'
 import Login from './routes/login'
@@ -18,8 +19,13 @@ function Main() {
           />
 
           <Route
-            path = '/accounts'
-            component = {Accounts}
+            path = '/users'
+            component = {Users}
+          />
+
+          <Route
+            path = '/administrators'
+            component = {Administrators}
           />
 
           <Route

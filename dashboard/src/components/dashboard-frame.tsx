@@ -3,7 +3,7 @@ import { ReactNode } from 'react'
 import { Link } from 'react-router-dom'
 
 type PropsType = {
-  selectedSection: 'dashboard' | 'accounts' | 'pictures' | 'registerAnAccount',
+  selectedSection: 'dashboard' | 'users' | 'administrators' | 'pictures' | 'registerAnAccount',
   onLogout?: () => void,
   children?: ReactNode
 }
@@ -41,10 +41,17 @@ function DashboardFrame(props: PropsType) {
           </Link>
 
           <Link
-            className = {selectedSection == 'accounts' ? 'dashboard_section_selected_item' : 'dashboard_section_item'}
-            to = '/accounts'
+            className = {selectedSection == 'users' ? 'dashboard_section_selected_item' : 'dashboard_section_item'}
+            to = '/users'
           >
-            Accounts
+            Users
+          </Link>
+
+          <Link
+            className = {selectedSection == 'administrators' ? 'dashboard_section_selected_item' : 'dashboard_section_item'}
+            to = '/administrators'
+          >
+            Administrators
           </Link>
 
           <Link
