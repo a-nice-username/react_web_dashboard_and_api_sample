@@ -16,6 +16,7 @@ type AccountType = {
 
 function Users() {
   const [ accounts, setAccounts ] = useState<AccountType[]>([])
+  const [ selectedIDs, setSelectedIDs] = useState<number[]>([])
   const [ isAlreadyLogout, setIsAlreadyLogout ] = useState(false)
 
   useEffect(() => {
@@ -31,15 +32,35 @@ function Users() {
         <AccountListItem
           isTheMainRow
           id = 'ID'
+          isChecked = {selectedIDs.length == accounts.length}
           username = 'Username'
           role = 'Role'
           created_at = 'Created At'
+          onIsCheckedChange = {() => {
+            if(selectedIDs.length == accounts.length) {
+              setSelectedIDs([])
+            } else {
+              setSelectedIDs(accounts.map(account => account.id))
+            }
+          }}
         />
         
         {
           accounts.map(account => (
             <AccountListItem
               id = {String(account.id)}
+              isChecked = {selectedIDs.includes(account.id)}
+              onIsCheckedChange = {() => {
+                const newSelectedIDs = JSON.parse(JSON.stringify(selectedIDs)) as number[]
+
+                if(newSelectedIDs.includes(account.id)) {
+                  newSelectedIDs.splice(newSelectedIDs.indexOf(account.id), 1)
+                } else {
+                  newSelectedIDs.push(account.id)
+                }
+                
+                setSelectedIDs(newSelectedIDs)
+              }}
               username = {account.username}
               role = {account.role}
               created_at = {format(new Date(account.created_at), 'dd MMMM yyyy, hh:mm')}

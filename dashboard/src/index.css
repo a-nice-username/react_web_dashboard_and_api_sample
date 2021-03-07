@@ -124,21 +124,25 @@ a:hover {
 }
 
 .account_list_item_id_container {
+  background-color: white;
   min-width: 60px;
   padding: 10px;
 }
 
 .account_list_item_username_container {
+  background-color: white;
   min-width: 300px;
   padding: 10px;
 }
 
 .account_list_item_role_container {
+  background-color: white;
   min-width: 100px;
   padding: 10px;
 }
 
 .account_list_item_created_at_container {
+  background-color: white;
   min-width: 235px;
   padding: 10px;
 }
