@@ -83,7 +83,7 @@ function DashboardFrame(props: PropsType) {
           </a>
         </div>
       </div>
-
+      
       <div
         className = 'dashboard_children_container'
       >

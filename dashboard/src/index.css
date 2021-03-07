@@ -66,8 +66,7 @@ a:hover {
 
 .dashboard_side_bar {
   background-color: rgb(40, 40, 40);
-  height: 100vh;
-  width: 260px;
+  min-width: 260px;
 }
 
 .dashboard_side_bar_title {
@@ -111,9 +110,37 @@ a:hover {
 }
 
 .dashboard_children_container {
+  bottom: 0px;
+  left: 260px;
+  overflow: scroll;
+  position: absolute;
+  right: 0px;
+  top: 0px;
+}
+
+.account_list_item_container {
+  background-color: white;
   display: flex;
-  flex-direction: column;
-  flex: 1;
+}
+
+.account_list_item_id_container {
+  min-width: 60px;
+  padding: 10px;
+}
+
+.account_list_item_username_container {
+  min-width: 300px;
+  padding: 10px;
+}
+
+.account_list_item_role_container {
+  min-width: 100px;
+  padding: 10px;
+}
+
+.account_list_item_created_at_container {
+  min-width: 235px;
+  padding: 10px;
 }
 
 .loader {

@@ -1,10 +1,21 @@
 import { useEffect, useState } from 'react'
 
 import { Redirect } from 'react-router'
+import { format } from 'date-fns'
 
 import DashboardFrame from '../components/dashboard-frame'
+import AccountListItem from '../components/account-list-item'
+import { API } from '../helpers/custom-fetch'
+
+type AccountType = {
+  id: number,
+  username: string,
+  created_at: string,
+  role: string
+}
 
 function Administrators() {
+  const [ accounts, setAccounts ] = useState<AccountType[]>([])
   const [ isAlreadyLogout, setIsAlreadyLogout ] = useState(false)
 
   useEffect(() => {
@@ -17,7 +28,24 @@ function Administrators() {
         onLogout = {() => setIsAlreadyLogout(true)}
         selectedSection = 'administrators'
       >
+        <AccountListItem
+          isTheMainRow
+          id = 'ID'
+          username = 'Username'
+          role = 'Role'
+          created_at = 'Created At'
+        />
         
+        {
+          accounts.map(account => (
+            <AccountListItem
+              id = {String(account.id)}
+              username = {account.username}
+              role = {account.role}
+              created_at = {format(new Date(account.created_at), 'dd MMMM yyyy, hh:mm')}
+            />
+          ))
+        }
       </DashboardFrame>
 
       {
@@ -36,6 +64,18 @@ function Administrators() {
       setIsAlreadyLogout(true)
 
       return
+    }
+
+    loadData()
+  }
+
+  async function loadData() {
+    const res = await API.GetAdministrators()
+
+    if(res.JSON) {
+      setAccounts(res.JSON['data'])
+    } else {
+      console.log(res.Text || res.error.toString())
     }
   }
 }

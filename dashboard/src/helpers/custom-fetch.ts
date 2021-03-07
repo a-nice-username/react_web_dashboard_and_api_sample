@@ -86,5 +86,7 @@ type LoginParamsType = {
 }
 
 export const API = {
-  Login: (params: LoginParamsType) => CustomFetch('POST', '/login', false, params)
+  Login: (params: LoginParamsType) => CustomFetch('POST', '/login', false, params),
+  GetUsers: () => CustomFetch('GET', '/get-users', false),
+  GetAdministrators: () => CustomFetch('GET', '/get-administrators', false)
 }
