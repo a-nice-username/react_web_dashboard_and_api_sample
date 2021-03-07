@@ -4,7 +4,7 @@ import { Redirect } from 'react-router'
 
 import DashboardFrame from '../components/dashboard-frame'
 
-function Home() {
+function Accounts() {
   const [ isAlreadyLogout, setIsAlreadyLogout ] = useState(false)
 
   useEffect(() => {
@@ -15,7 +15,7 @@ function Home() {
     <>
       <DashboardFrame
         onLogout = {() => setIsAlreadyLogout(true)}
-        selectedSection = 'dashboard'
+        selectedSection = 'accounts'
       >
         
       </DashboardFrame>
@@ -40,4 +40,4 @@ function Home() {
   }
 }
 
-export default Home
+export default Accounts
