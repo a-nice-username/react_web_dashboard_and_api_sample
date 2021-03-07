@@ -105,7 +105,7 @@ const register = (req: Request, res: Response) => {
         giveResponse(res, 'bad_request', data, `Maaf username '${username}' sudah dipakai, mohon gunakan username yang lain`)
       } else {
         pool.query(
-          `INSERT INTO accounts (username, password) VALUES ($1, $2)`,
+          `INSERT INTO accounts (username, password, role) VALUES ($1, $2, 'user')`,
           [username, password],
           (err, results) => {
             if(err) {
@@ -313,7 +313,7 @@ const dashboardGetUsers = (req: Request, res: Response) => {
   let data = [] as any[]
 
   pool.query(
-    `SELECT * FROM accounts WHERE role = 'users'`,
+    `SELECT * FROM accounts WHERE role = 'user'`,
     [],
     (err, results) => {
       if(err) {
