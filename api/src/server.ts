@@ -27,5 +27,6 @@ app.get('/frontend/get-pictures', db.frontend.getPictures)
 app.post('/frontend/add-a-picture', db.frontend.addAPicture)
 
 app.post('/dashboard/login', db.dashboard.login)
+app.get('/dashboard/get-users', db.dashboard.getUsers)
 
 app.listen(port, () => console.log(`App running on port ${port}.`))

@@ -309,6 +309,35 @@ const dashboardLogin = (req: Request, res: Response) => {
   )
 }
 
+const dashboardGetUsers = (req: Request, res: Response) => {
+  let data = [] as any[]
+
+  pool.query(
+    `SELECT * FROM accounts WHERE role = 'users'`,
+    [],
+    (err, results) => {
+      if(err) {
+        giveResponse(res, 'bad_request', data, err.toString())
+
+        return
+      }
+
+      if(results.rows.length == 0) {
+        giveResponse(res, 'not_found', data, 'Tidak ditemukan user dengan id yang diberikan')
+
+        return
+      }
+
+      data = results.rows.map(row => ({
+        ...row,
+        password: undefined
+      }))
+
+      giveResponse(res, 'success', data, 'Sukses mendapatkan daftar user')
+    }
+  )
+}
+
 export default {
   root,
   frontend: {
@@ -318,6 +347,7 @@ export default {
     addAPicture
   },
   dashboard: {
-    login: dashboardLogin
+    login: dashboardLogin,
+    getUsers: dashboardGetUsers
   }
 }
