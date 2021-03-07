@@ -323,7 +323,7 @@ const dashboardGetUsers = (req: Request, res: Response) => {
       }
 
       if(results.rows.length == 0) {
-        giveResponse(res, 'not_found', data, 'Tidak ditemukan user dengan id yang diberikan')
+        giveResponse(res, 'not_found', data, 'Tidak ditemukan daftar user')
 
         return
       }
@@ -338,6 +338,35 @@ const dashboardGetUsers = (req: Request, res: Response) => {
   )
 }
 
+const dashboardGetAdministrators = (req: Request, res: Response) => {
+  let data = [] as any[]
+
+  pool.query(
+    `SELECT * FROM accounts WHERE role = 'admin'`,
+    [],
+    (err, results) => {
+      if(err) {
+        giveResponse(res, 'bad_request', data, err.toString())
+
+        return
+      }
+
+      if(results.rows.length == 0) {
+        giveResponse(res, 'not_found', data, 'Tidak ditemukan daftar admininistrator')
+
+        return
+      }
+
+      data = results.rows.map(row => ({
+        ...row,
+        password: undefined
+      }))
+
+      giveResponse(res, 'success', data, 'Sukses mendapatkan daftar admininistrator')
+    }
+  )
+}
+
 export default {
   root,
   frontend: {
@@ -348,6 +377,7 @@ export default {
   },
   dashboard: {
     login: dashboardLogin,
-    getUsers: dashboardGetUsers
+    getUsers: dashboardGetUsers,
+    getAdministrators: dashboardGetAdministrators
   }
 }
