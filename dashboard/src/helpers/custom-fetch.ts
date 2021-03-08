@@ -85,7 +85,12 @@ type LoginParamsType = {
   password: string
 }
 
-type SetUsersAsAdminsParamsType = {
+type ChangeAccountsRoleParamsType = {
+  IDs: string,
+  role: 'administrator' | 'user'
+}
+
+type DeleteAccountsParamsType = {
   IDs: string
 }
 
@@ -93,5 +98,6 @@ export const API = {
   Login: (params: LoginParamsType) => CustomFetch('POST', '/login', false, params),
   GetUsers: () => CustomFetch('GET', '/get-users', false),
   GetAdministrators: () => CustomFetch('GET', '/get-administrators', false),
-  SetUsersAsAdmins: (params: SetUsersAsAdminsParamsType) => CustomFetch('POST', '/set-users-as-admins', false, params)
+  ChangeAccountsRole: (params: ChangeAccountsRoleParamsType) => CustomFetch('POST', '/change-accounts-role', false, params),
+  DeleteAccounts: (params: DeleteAccountsParamsType) => CustomFetch('POST', '/delete-accounts', false, params)
 }

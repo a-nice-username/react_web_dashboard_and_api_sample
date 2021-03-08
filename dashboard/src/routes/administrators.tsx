@@ -138,8 +138,32 @@ function Administrators() {
     }
   }
 
-  function applyDropdown() {
+  async function applyDropdown() {
+    let IDs = ''
 
+    for(const ID of selectedIDs) {
+      IDs += `${String(ID)} `
+    }
+
+    IDs = IDs.trim().replace(/ /g, ', ')
+
+    if(selectedBulkOption == 'Remove from admin list') {
+      const res = await API.ChangeAccountsRole({
+        IDs,
+        role: 'user'
+      })
+  
+      if(res.JSON) {
+        alert(res.JSON['info'])
+  
+        if(res.JSON['status'] == 'success') {
+          setSelectedBulkOption('Select an option') 
+          setSelectedIDs([])
+        }
+      } else {
+        alert(res.Text || res.error.toString())
+      }
+    }
   }
 }
 

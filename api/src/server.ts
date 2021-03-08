@@ -28,7 +28,8 @@ app.post('/frontend/add-a-picture', db.frontend.addAPicture)
 
 app.post('/dashboard/login', db.dashboard.login)
 app.get('/dashboard/get-users', db.dashboard.getUsers)
-app.post('/dashboard/set-users-as-admins', db.dashboard.setUsersAsAdmins)
 app.get('/dashboard/get-administrators', db.dashboard.getAdministrators)
+app.post('/dashboard/change-accounts-role', db.dashboard.changeAccountsRole)
+app.post('/dashboard/delete-accounts', db.dashboard.deleteAccounts)
 
 app.listen(port, () => console.log(`App running on port ${port}.`))

@@ -338,32 +338,6 @@ const dashboardGetUsers = (req: Request, res: Response) => {
   )
 }
 
-const dashboardSetUsersAsAdmins = (req: Request, res: Response) => {
-  let data = {}
-
-  const { IDs } = req.fields
-
-  if (!IDs) {
-    giveResponse(res, 'bad_request', data, "Parameter 'IDs' required")
-
-    return
-  }
-
-  pool.query(
-    `UPDATE accounts SET role = 'administrator' WHERE id IN ($1)`,
-    [IDs],
-    (err, results) => {
-      if(err) {
-        giveResponse(res, 'bad_request', data, err.toString())
-
-        return
-      }
-
-      giveResponse(res, 'success', data, 'Sukses mengubah role user - user menjadi administrator')
-    }
-  )
-}
-
 const dashboardGetAdministrators = (req: Request, res: Response) => {
   let data = [] as any[]
 
@@ -393,6 +367,94 @@ const dashboardGetAdministrators = (req: Request, res: Response) => {
   )
 }
 
+const dashboardChangeAccountsRole = (req: Request, res: Response) => {
+  let data = {}
+
+  const { IDs, role } = req.fields
+
+  if (!IDs) {
+    giveResponse(res, 'bad_request', data, "Parameter 'IDs' required")
+
+    return
+  }
+
+  if (!role) {
+    giveResponse(res, 'bad_request', data, "Parameter 'role' required")
+
+    return
+  }
+
+  pool.query(
+    `UPDATE accounts SET role = $1 WHERE id IN (${IDs})`,
+    [role],
+    (err, results) => {
+      if(err) {
+        giveResponse(res, 'bad_request', data, err.toString())
+
+        return
+      }
+
+      giveResponse(res, 'success', data, `Sukses mengubah role akun - akun menjadi ${role}`)
+    }
+  )
+}
+
+const dashboardDeleteAccounts = (req: Request, res: Response) => {
+  let data = {}
+
+  const { IDs } = req.fields
+
+  if (!IDs) {
+    giveResponse(res, 'bad_request', data, "Parameter 'IDs' required")
+
+    return
+  }
+
+  pool.query(
+    `SELECT * FROM pictures WHERE owner_id IN (${IDs})`,
+    [],
+    (err, results) => {
+      if(err) {
+        giveResponse(res, 'bad_request', data, err.toString())
+
+        return
+      }
+
+      const picturesURL = results.rows.map(row => row.url)
+
+      pool.query(
+        `DELETE FROM pictures WHERE owner_id IN (${IDs})`,
+        [],
+        (err, results) => {
+          if(err) {
+            giveResponse(res, 'bad_request', data, err.toString())
+    
+            return
+          }
+    
+          pool.query(
+            `DELETE FROM accounts WHERE id IN (${IDs})`,
+            [],
+            (err, results) => {
+              if(err) {
+                giveResponse(res, 'bad_request', data, err.toString())
+        
+                return
+              }
+        
+              giveResponse(res, 'success', data, 'Sukses menghapus akun - akun')
+            }
+          )
+        }
+      )
+
+      for(const pictureURL of picturesURL) {
+        fs.unlink(`.${pictureURL}`)
+      }
+    }
+  )
+}
+
 export default {
   root,
   frontend: {
@@ -404,7 +466,8 @@ export default {
   dashboard: {
     login: dashboardLogin,
     getUsers: dashboardGetUsers,
-    setUsersAsAdmins: dashboardSetUsersAsAdmins,
-    getAdministrators: dashboardGetAdministrators
+    getAdministrators: dashboardGetAdministrators,
+    changeAccountsRole: dashboardChangeAccountsRole,
+    deleteAccounts: dashboardDeleteAccounts
   }
 }

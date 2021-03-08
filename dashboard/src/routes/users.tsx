@@ -145,17 +145,18 @@ function Users() {
   }
 
   async function applyDropdown() {
+    let IDs = ''
+
+    for(const ID of selectedIDs) {
+      IDs += `${String(ID)} `
+    }
+
+    IDs = IDs.trim().replace(/ /g, ',')
+
     if(selectedBulkOption == 'Set role as admin') {
-      let IDs = ''
-  
-      for(const ID of selectedIDs) {
-        IDs += `${String(ID)} `
-      }
-  
-      IDs = IDs.trim().replace(/ /g, '')
-  
-      const res = await API.SetUsersAsAdmins({
-        IDs
+      const res = await API.ChangeAccountsRole({
+        IDs,
+        role: 'administrator'
       })
   
       if(res.JSON) {
@@ -168,6 +169,21 @@ function Users() {
       } else {
         alert(res.Text || res.error.toString())
       }
+    } else if(selectedBulkOption == 'Delete accounts'){
+      const res = await API.DeleteAccounts({
+        IDs
+      })
+
+      if(res.JSON) {
+        alert(res.JSON['info'])
+  
+        if(res.JSON['status'] == 'success') {
+          setSelectedBulkOption('Select an option') 
+          setSelectedIDs([])
+        }
+      } else {
+        alert(res.Text || res.error.toString())
+      }      
     }
   }
 }
