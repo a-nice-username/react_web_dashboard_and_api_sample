@@ -420,7 +420,9 @@ const dashboardDeleteAccounts = (req: Request, res: Response) => {
         return
       }
 
-      const picturesURL = results.rows.map(row => row.url)
+      for(const row of results.rows) {
+        fs.unlink(`.${row.url}`)
+      }
 
       pool.query(
         `DELETE FROM pictures WHERE owner_id IN (${IDs})`,
@@ -447,10 +449,6 @@ const dashboardDeleteAccounts = (req: Request, res: Response) => {
           )
         }
       )
-
-      for(const pictureURL of picturesURL) {
-        fs.unlink(`.${pictureURL}`)
-      }
     }
   )
 }
