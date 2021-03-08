@@ -80,6 +80,10 @@ export const CustomFetch = async(
   return response
 }
 
+type CheckAccountRoleParamsType = {
+  ID: number
+}
+
 type LoginParamsType = {
   username: string,
   password: string
@@ -95,9 +99,10 @@ type DeleteAccountsParamsType = {
 }
 
 export const API = {
-  Login: (params: LoginParamsType) => CustomFetch('POST', '/login', false, params),
-  GetUsers: () => CustomFetch('GET', '/get-users', false),
-  GetAdministrators: () => CustomFetch('GET', '/get-administrators', false),
+  CheckAccountRole: (params: CheckAccountRoleParamsType) => CustomFetch('GET', '/check-account-role', false, params),
   ChangeAccountsRole: (params: ChangeAccountsRoleParamsType) => CustomFetch('POST', '/change-accounts-role', false, params),
-  DeleteAccounts: (params: DeleteAccountsParamsType) => CustomFetch('POST', '/delete-accounts', false, params)
+  DeleteAccounts: (params: DeleteAccountsParamsType) => CustomFetch('POST', '/delete-accounts', false, params),
+  Login: (params: LoginParamsType) => CustomFetch('POST', '/dashboard/login', false, params),
+  GetUsers: () => CustomFetch('GET', '/dashboard/get-users', false),
+  GetAdministrators: () => CustomFetch('GET', '/dashboard/get-administrators', false)
 }

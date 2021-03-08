@@ -3,6 +3,7 @@ import { useEffect, useState } from 'react'
 import { Redirect } from 'react-router'
 
 import DashboardFrame from '../components/dashboard-frame'
+import { validateAccountRoleAccess } from '../helpers/validate-account-role-access'
 
 function RegisterAnAccount() {
   const [ isAlreadyLogout, setIsAlreadyLogout ] = useState(false)
@@ -37,6 +38,12 @@ function RegisterAnAccount() {
 
       return
     }
+
+    validateAccountRoleAccess(
+      JSON.parse(loginData)['id'],
+      () => {},
+      () => setIsAlreadyLogout(true)
+    )
   }
 }
 

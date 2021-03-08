@@ -124,7 +124,7 @@ a:hover {
 }
 
 .dashboard_dropdown {
-  height: 35px;
+  min-height: 35px;
 }
 
 .dashboard_dropdown_apply_button {

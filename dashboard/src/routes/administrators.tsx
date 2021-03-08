@@ -6,6 +6,7 @@ import { format } from 'date-fns'
 import DashboardFrame from '../components/dashboard-frame'
 import AccountListItem from '../components/account-list-item'
 import { API } from '../helpers/custom-fetch'
+import { validateAccountRoleAccess } from '../helpers/validate-account-role-access'
 
 type AccountType = {
   id: number,
@@ -14,11 +15,19 @@ type AccountType = {
   role: string
 }
 
+type LoginDataType = {
+  id: number,
+  username: string,
+  created_at: string,
+  role: string
+}
+
 function Administrators() {
-  const [ selectedBulkOption, setSelectedBulkOption ] = useState<'Select an option' | 'Remove from admin list'>('Select an option')
+  const [ selectedBulkOption, setSelectedBulkOption ] = useState<'Select an option' | 'Remove from admin list' | 'Delete accounts'>('Select an option')
   const [ accounts, setAccounts ] = useState<AccountType[]>([])
   const [ selectedIDs, setSelectedIDs] = useState<number[]>([])
   const [ isAlreadyLogout, setIsAlreadyLogout ] = useState(false)
+  const [ loginData, setLoginData ] = useState<LoginDataType>()
 
   useEffect(() => {
     handleIfNotAlreadyLoggedIn()
@@ -30,45 +39,54 @@ function Administrators() {
         onLogout = {() => setIsAlreadyLogout(true)}
         selectedSection = 'administrators'
       >
-        <div
-          className = 'dashboard_top_navigation'
-        >
-          <select
-            className = 'dashboard_dropdown'
-            disabled = {selectedIDs.length == 0}
-            onChange = {event => setSelectedBulkOption(event.target.value as any)}
-            value = {selectedBulkOption}
-          >
-            <option
-              value = 'Select an option'
+        {
+          loginData && loginData.role == 'superuser' &&
+            <div
+              className = 'dashboard_top_navigation'
             >
-              Select an option
-            </option>
+              <select
+                className = 'dashboard_dropdown'
+                disabled = {selectedIDs.length == 0}
+                onChange = {event => setSelectedBulkOption(event.target.value as any)}
+                value = {selectedBulkOption}
+              >
+                <option
+                  value = 'Select an option'
+                >
+                  Select an option
+                </option>
 
-            <option
-              value = 'Remove from admin list'
-            >
-              Remove from admin list
-            </option>
-          </select>
+                <option
+                  value = 'Remove from admin list'
+                >
+                  Remove from admin list
+                </option>
 
-          <a
-            className = 'dashboard_dropdown_apply_button'
-            href = 'javascript:void(0)'
-            onClick = {applyDropdown}
-            style = {{
-              backgroundColor: selectedIDs.length == 0 || selectedBulkOption == 'Select an option' ? 'gray' : 'green',
-              pointerEvents: selectedIDs.length == 0 || selectedBulkOption == 'Select an option' ? 'none' : 'auto',
-            }}
-          >
-            Apply
-          </a>
-        </div>
+                <option
+                  value = 'Delete accounts'
+                >
+                  Delete accounts
+                </option>
+              </select>
+
+              <a
+                className = 'dashboard_dropdown_apply_button'
+                href = 'javascript:void(0)'
+                onClick = {applyDropdown}
+                style = {{
+                  backgroundColor: selectedIDs.length == 0 || selectedBulkOption == 'Select an option' ? 'gray' : 'green',
+                  pointerEvents: selectedIDs.length == 0 || selectedBulkOption == 'Select an option' ? 'none' : 'auto',
+                }}
+              >
+                Apply
+              </a>
+            </div>
+        }
 
         <AccountListItem
           isTheMainRow
           id = 'ID'
-          isHideCheckBox = {accounts.filter(account => account.role != 'superuser').length == 0}
+          isHideCheckBox = {loginData == undefined || loginData.role == 'administrator' || accounts.filter(account => account.role != 'superuser').length == 0}
           isChecked = {selectedIDs.length == accounts.filter(account => account.role != 'superuser').length}
           username = 'Username'
           role = 'Role'
@@ -86,7 +104,7 @@ function Administrators() {
           accounts.map(account => (
             <AccountListItem
               id = {String(account.id)}
-              isHideCheckBox = {account.role == 'superuser'}
+              isHideCheckBox = {loginData == undefined || loginData.role == 'administrator' || account.role == 'superuser'}
               isChecked = {selectedIDs.includes(account.id)}
               onIsCheckedChange = {() => {
                 const newSelectedIDs = JSON.parse(JSON.stringify(selectedIDs)) as number[]
@@ -115,7 +133,7 @@ function Administrators() {
       }
     </>
   )
-
+  
   function handleIfNotAlreadyLoggedIn() {
     const loginData = localStorage.getItem('LOGIN_DATA')
 
@@ -125,7 +143,15 @@ function Administrators() {
       return
     }
 
-    loadData()
+    validateAccountRoleAccess(
+      JSON.parse(loginData)['id'],
+      () => {
+        setLoginData(JSON.parse(loginData))
+    
+        loadData()
+      },
+      () => setIsAlreadyLogout(true)
+    )
   }
 
   async function loadData() {
@@ -154,15 +180,34 @@ function Administrators() {
       })
   
       if(res.JSON) {
-        alert(res.JSON['info'])
-  
         if(res.JSON['status'] == 'success') {
           setSelectedBulkOption('Select an option') 
           setSelectedIDs([])
         }
+
+        alert(res.JSON['info'])
+
+        window.location.reload()
       } else {
         alert(res.Text || res.error.toString())
       }
+    } else if(selectedBulkOption == 'Delete accounts'){
+      const res = await API.DeleteAccounts({
+        IDs
+      })
+
+      if(res.JSON) {
+        if(res.JSON['status'] == 'success') {
+          setSelectedBulkOption('Select an option') 
+          setSelectedIDs([])
+        }
+
+        alert(res.JSON['info'])
+
+        window.location.reload()
+      } else {
+        alert(res.Text || res.error.toString())
+      }      
     }
   }
 }

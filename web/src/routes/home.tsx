@@ -142,7 +142,7 @@ function Home() {
     </>
   )
 
-  function handleIfNotAlreadyLoggedIn() {
+  async function handleIfNotAlreadyLoggedIn() {
     const loginData = localStorage.getItem('LOGIN_DATA')
 
     if(loginData == null) {
@@ -153,7 +153,17 @@ function Home() {
       return
     }
 
-    loadPictures()
+    const res = await API.CheckIfAccountExist({
+      ID: JSON.parse(loginData)['id']
+    })
+    
+    if(res.JSON && res.JSON['status'] == 'not_found') {
+      alert('Maaf anda telah keluar dari akun / akun anda telah dihapus')
+
+      logout()
+    } else {
+      loadPictures()
+    }
   }
 
   async function loadPictures() {

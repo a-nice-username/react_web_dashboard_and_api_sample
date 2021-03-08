@@ -80,6 +80,10 @@ export const CustomFetch = async(
   return response
 }
 
+type CheckIfAccountExistParamsType = {
+  ID: number
+}
+
 type LoginParamsType = {
   username: string,
   password: string
@@ -101,8 +105,9 @@ type AddAPictureParamsType = {
 }
 
 export const API = {
-  Login: (params: LoginParamsType) => CustomFetch('POST', '/login', false, params),
-  Register: (params: RegisterParamsType) => CustomFetch('POST', '/register', false, params),
-  GetPictures: (params: GetPicturesParamsType) => CustomFetch('GET', '/get-pictures', false, params),
-  AddAPicture: (params: AddAPictureParamsType) => CustomFetch('POST', '/add-a-picture', true, params)
+  CheckIfAccountExist: (params: CheckIfAccountExistParamsType) => CustomFetch('GET', '/check-if-account-exist', false, params),
+  Login: (params: LoginParamsType) => CustomFetch('POST', '/frontend/login', false, params),
+  Register: (params: RegisterParamsType) => CustomFetch('POST', '/frontend/register', false, params),
+  GetPictures: (params: GetPicturesParamsType) => CustomFetch('GET', '/frontend/get-pictures', false, params),
+  AddAPicture: (params: AddAPictureParamsType) => CustomFetch('POST', '/frontend/add-a-picture', true, params)
 }

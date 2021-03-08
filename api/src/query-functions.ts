@@ -144,7 +144,7 @@ const getPictures = (req: Request, res: Response) => {
       }
 
       if(results.rows.length == 0) {
-        giveResponse(res, 'not_found', data, 'Tidak ditemukan user dengan id yang diberikan')
+        giveResponse(res, 'not_found', data, `Tidak ditemukan user dengan id '${id}'`)
 
         return
       }
@@ -208,7 +208,7 @@ const addAPicture = (req: Request, res: Response) => {
       }
 
       if(results.rows.length == 0) {
-        giveResponse(res, 'not_found', data, 'Tidak ditemukan user dengan owner_id yang diberikan')
+        giveResponse(res, 'not_found', data, `Tidak ditemukan user dengan owner_id '${owner_id}'`)
 
         return
       }
@@ -367,7 +367,7 @@ const dashboardGetAdministrators = (req: Request, res: Response) => {
   )
 }
 
-const dashboardChangeAccountsRole = (req: Request, res: Response) => {
+const changeAccountsRole = (req: Request, res: Response) => {
   let data = {}
 
   const { IDs, role } = req.fields
@@ -399,7 +399,7 @@ const dashboardChangeAccountsRole = (req: Request, res: Response) => {
   )
 }
 
-const dashboardDeleteAccounts = (req: Request, res: Response) => {
+const deleteAccounts = (req: Request, res: Response) => {
   let data = {}
 
   const { IDs } = req.fields
@@ -421,7 +421,11 @@ const dashboardDeleteAccounts = (req: Request, res: Response) => {
       }
 
       for(const row of results.rows) {
-        fs.unlink(`.${row.url}`)
+        const path = `.${row.url}`
+
+        if(fs.existsSync(path)) {
+          fs.unlink(path)
+        }
       }
 
       pool.query(
@@ -453,8 +457,78 @@ const dashboardDeleteAccounts = (req: Request, res: Response) => {
   )
 }
 
+const checkIfAccountExist = (req: Request, res: Response) => {
+  let data = {}
+
+  const { ID } = req.query
+
+  if (!ID) {
+    giveResponse(res, 'bad_request', data, "Parameter 'ID' required")
+
+    return
+  }
+
+  pool.query(
+    `SELECT * FROM accounts WHERE id = $1`,
+    [ID],
+    (err, results) => {
+      if(err) {
+        giveResponse(res, 'bad_request', data, err.toString())
+
+        return
+      }
+
+      if(results.rows.length != 0) {
+        giveResponse(res, 'success', data, 'Akun eksis')
+      } else {
+        giveResponse(res, 'not_found', data, `Akun dengan id '${ID}' tidak eksis`)
+      }
+    }
+  )
+}
+
+const checkAccountRole = (req: Request, res: Response) => {
+  let data = {}
+
+  const { ID } = req.query
+
+  if (!ID) {
+    giveResponse(res, 'bad_request', data, "Parameter 'ID' required")
+
+    return
+  }
+
+  pool.query(
+    `SELECT * FROM accounts WHERE id = $1`,
+    [ID],
+    (err, results) => {
+      if(err) {
+        giveResponse(res, 'bad_request', data, err.toString())
+
+        return
+      }
+
+      if(results.rows.length != 0) {
+        const { role } = results.rows[0]
+
+        data = {
+          role
+        }
+
+        giveResponse(res, 'success', data, 'Sukses mendapat role akun')
+      } else {
+        giveResponse(res, 'not_found', data, `Akun tidak dengan id '${ID}' ditemukan`)
+      }
+    }
+  )
+}
+
 export default {
   root,
+  changeAccountsRole,
+  deleteAccounts,
+  checkIfAccountExist,
+  checkAccountRole,
   frontend: {
     login,
     register,
@@ -464,8 +538,6 @@ export default {
   dashboard: {
     login: dashboardLogin,
     getUsers: dashboardGetUsers,
-    getAdministrators: dashboardGetAdministrators,
-    changeAccountsRole: dashboardChangeAccountsRole,
-    deleteAccounts: dashboardDeleteAccounts
+    getAdministrators: dashboardGetAdministrators
   }
 }

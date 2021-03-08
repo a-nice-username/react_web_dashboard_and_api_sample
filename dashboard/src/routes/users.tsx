@@ -6,6 +6,7 @@ import { format } from 'date-fns'
 import DashboardFrame from '../components/dashboard-frame'
 import AccountListItem from '../components/account-list-item'
 import { API } from '../helpers/custom-fetch'
+import { validateAccountRoleAccess } from '../helpers/validate-account-role-access'
 
 type AccountType = {
   id: number,
@@ -131,7 +132,11 @@ function Users() {
       return
     }
 
-    loadData()
+    validateAccountRoleAccess(
+      JSON.parse(loginData)['id'],
+      () => loadData(),
+      () => setIsAlreadyLogout(true)
+    )
   }
 
   async function loadData() {
@@ -160,12 +165,14 @@ function Users() {
       })
   
       if(res.JSON) {
-        alert(res.JSON['info'])
-  
         if(res.JSON['status'] == 'success') {
           setSelectedBulkOption('Select an option') 
           setSelectedIDs([])
         }
+
+        alert(res.JSON['info'])
+
+        window.location.reload()
       } else {
         alert(res.Text || res.error.toString())
       }
@@ -175,12 +182,14 @@ function Users() {
       })
 
       if(res.JSON) {
-        alert(res.JSON['info'])
-  
         if(res.JSON['status'] == 'success') {
           setSelectedBulkOption('Select an option') 
           setSelectedIDs([])
         }
+
+        alert(res.JSON['info'])
+
+        window.location.reload()
       } else {
         alert(res.Text || res.error.toString())
       }      

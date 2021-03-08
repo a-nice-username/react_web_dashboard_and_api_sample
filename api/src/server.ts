@@ -20,6 +20,10 @@ app.use(formidable())
 app.use('/public', express.static(dir))
 
 app.get('/', db.root)
+app.post('/change-accounts-role', db.changeAccountsRole)
+app.post('/delete-accounts', db.deleteAccounts)
+app.get('/check-if-account-exist', db.checkIfAccountExist)
+app.get('/check-account-role', db.checkAccountRole)
 
 app.post('/frontend/login', db.frontend.login)
 app.post('/frontend/register', db.frontend.register)
@@ -29,7 +33,5 @@ app.post('/frontend/add-a-picture', db.frontend.addAPicture)
 app.post('/dashboard/login', db.dashboard.login)
 app.get('/dashboard/get-users', db.dashboard.getUsers)
 app.get('/dashboard/get-administrators', db.dashboard.getAdministrators)
-app.post('/dashboard/change-accounts-role', db.dashboard.changeAccountsRole)
-app.post('/dashboard/delete-accounts', db.dashboard.deleteAccounts)
 
 app.listen(port, () => console.log(`App running on port ${port}.`))
