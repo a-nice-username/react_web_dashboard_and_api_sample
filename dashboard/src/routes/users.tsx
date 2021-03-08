@@ -15,6 +15,7 @@ type AccountType = {
 }
 
 function Users() {
+  const [ selectedBulkOption, setSelectedBulkOption ] = useState<'Select an option' | 'Set role as admin' | 'Delete accounts'>('Select an option')
   const [ accounts, setAccounts ] = useState<AccountType[]>([])
   const [ selectedIDs, setSelectedIDs] = useState<number[]>([])
   const [ isAlreadyLogout, setIsAlreadyLogout ] = useState(false)
@@ -29,9 +30,51 @@ function Users() {
         onLogout = {() => setIsAlreadyLogout(true)}
         selectedSection = 'users'
       >
+        <div
+          className = 'dashboard_top_navigation'
+        >
+          <select
+            className = 'dashboard_dropdown'
+            disabled = {selectedIDs.length == 0}
+            onChange = {event => setSelectedBulkOption(event.target.value as any)}
+            value = {selectedBulkOption}
+          >
+            <option
+              value = 'Select an option'
+            >
+              Select an option
+            </option>
+
+            <option
+              value = 'Set role as admin'
+            >
+              Set role as admin
+            </option>
+
+            <option
+              value = 'Delete accounts'
+            >
+              Delete accounts
+            </option>
+          </select>
+
+          <a
+            className = 'dashboard_dropdown_apply_button'
+            href = 'javascript:void(0)'
+            onClick = {applyDropdown}
+            style = {{
+              backgroundColor: selectedIDs.length == 0 || selectedBulkOption == 'Select an option' ? 'gray' : 'green',
+              pointerEvents: selectedIDs.length == 0 || selectedBulkOption == 'Select an option' ? 'none' : 'auto',
+            }}
+          >
+            Apply
+          </a>
+        </div>
+
         <AccountListItem
           isTheMainRow
           id = 'ID'
+          isHideCheckBox = {accounts.length == 0}
           isChecked = {selectedIDs.length == accounts.length}
           username = 'Username'
           role = 'Role'
@@ -49,6 +92,7 @@ function Users() {
           accounts.map(account => (
             <AccountListItem
               id = {String(account.id)}
+              isHideCheckBox = {false}
               isChecked = {selectedIDs.includes(account.id)}
               onIsCheckedChange = {() => {
                 const newSelectedIDs = JSON.parse(JSON.stringify(selectedIDs)) as number[]
@@ -97,6 +141,33 @@ function Users() {
       setAccounts(res.JSON['data'])
     } else {
       console.log(res.Text || res.error.toString())
+    }
+  }
+
+  async function applyDropdown() {
+    if(selectedBulkOption == 'Set role as admin') {
+      let IDs = ''
+  
+      for(const ID of selectedIDs) {
+        IDs += `${String(ID)} `
+      }
+  
+      IDs = IDs.trim().replace(/ /g, '')
+  
+      const res = await API.SetUsersAsAdmins({
+        IDs
+      })
+  
+      if(res.JSON) {
+        alert(res.JSON['info'])
+  
+        if(res.JSON['status'] == 'success') {
+          setSelectedBulkOption('Select an option') 
+          setSelectedIDs([])
+        }
+      } else {
+        alert(res.Text || res.error.toString())
+      }
     }
   }
 }

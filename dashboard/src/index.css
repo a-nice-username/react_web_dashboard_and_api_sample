@@ -118,9 +118,39 @@ a:hover {
   top: 0px;
 }
 
+.dashboard_top_navigation {
+  display: flex;
+  padding: 10px;
+}
+
+.dashboard_dropdown {
+  height: 35px;
+}
+
+.dashboard_dropdown_apply_button {
+  align-items: center;
+  border-radius: 5px;
+  color: white;
+  display: flex;
+  font-weight: bold;
+  height: 35px;
+  margin-left: 10px;
+  padding-left: 10px;
+  padding-right: 10px;
+  text-decoration-line: none;
+}
+
 .account_list_item_container {
   background-color: white;
   display: flex;
+}
+
+.account_list_checkbox_container {
+  align-items: center;
+  background-color: silver;
+  display: flex;
+  justify-content: center;
+  min-width: 40px;
 }
 
 .account_list_item_id_container {
@@ -137,7 +167,7 @@ a:hover {
 
 .account_list_item_role_container {
   background-color: white;
-  min-width: 100px;
+  min-width: 140px;
   padding: 10px;
 }
 

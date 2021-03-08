@@ -85,8 +85,13 @@ type LoginParamsType = {
   password: string
 }
 
+type SetUsersAsAdminsParamsType = {
+  IDs: string
+}
+
 export const API = {
   Login: (params: LoginParamsType) => CustomFetch('POST', '/login', false, params),
   GetUsers: () => CustomFetch('GET', '/get-users', false),
-  GetAdministrators: () => CustomFetch('GET', '/get-administrators', false)
+  GetAdministrators: () => CustomFetch('GET', '/get-administrators', false),
+  SetUsersAsAdmins: (params: SetUsersAsAdminsParamsType) => CustomFetch('POST', '/set-users-as-admins', false, params)
 }

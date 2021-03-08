@@ -3,8 +3,9 @@ type AccountListItemPropsType = {
   username: string,
   created_at: string,
   role: string,
-  isChecked?: boolean,
-  onIsCheckedChange?: () => void,
+  isHideCheckBox: boolean,
+  isChecked: boolean,
+  onIsCheckedChange: () => void,
   isTheMainRow?: boolean
 }
 
@@ -19,14 +20,15 @@ function AccountListItem(props: AccountListItemPropsType) {
         }}
       >
         <div
-          style = {{
-            padding: 10
-          }}
+          className = 'account_list_checkbox_container'
         >
           <input
             checked = {props.isChecked}
-            onChange = {event => props.onIsCheckedChange!()}
+            onChange = {props.onIsCheckedChange}
             type = 'checkbox'
+            style = {{
+              display: props.isHideCheckBox ? 'none' : 'block'
+            }}
           />
         </div>
 

@@ -282,7 +282,7 @@ const dashboardLogin = (req: Request, res: Response) => {
   }
 
   pool.query(
-    `SELECT * FROM accounts WHERE username = $1 AND role = 'admin'`,
+    `SELECT * FROM accounts WHERE username = $1 AND NOT role = 'user'`,
     [username],
     (err, results) => {
       if(err) {
@@ -338,11 +338,37 @@ const dashboardGetUsers = (req: Request, res: Response) => {
   )
 }
 
+const dashboardSetUsersAsAdmins = (req: Request, res: Response) => {
+  let data = {}
+
+  const { IDs } = req.fields
+
+  if (!IDs) {
+    giveResponse(res, 'bad_request', data, "Parameter 'IDs' required")
+
+    return
+  }
+
+  pool.query(
+    `UPDATE accounts SET role = 'administrator' WHERE id IN ($1)`,
+    [IDs],
+    (err, results) => {
+      if(err) {
+        giveResponse(res, 'bad_request', data, err.toString())
+
+        return
+      }
+
+      giveResponse(res, 'success', data, 'Sukses mengubah role user - user menjadi administrator')
+    }
+  )
+}
+
 const dashboardGetAdministrators = (req: Request, res: Response) => {
   let data = [] as any[]
 
   pool.query(
-    `SELECT * FROM accounts WHERE role = 'admin'`,
+    `SELECT * FROM accounts WHERE NOT role = 'user'`,
     [],
     (err, results) => {
       if(err) {
@@ -352,7 +378,7 @@ const dashboardGetAdministrators = (req: Request, res: Response) => {
       }
 
       if(results.rows.length == 0) {
-        giveResponse(res, 'not_found', data, 'Tidak ditemukan daftar admininistrator')
+        giveResponse(res, 'not_found', data, 'Tidak ditemukan daftar administrator')
 
         return
       }
@@ -362,7 +388,7 @@ const dashboardGetAdministrators = (req: Request, res: Response) => {
         password: undefined
       }))
 
-      giveResponse(res, 'success', data, 'Sukses mendapatkan daftar admininistrator')
+      giveResponse(res, 'success', data, 'Sukses mendapatkan daftar administrator')
     }
   )
 }
@@ -378,6 +404,7 @@ export default {
   dashboard: {
     login: dashboardLogin,
     getUsers: dashboardGetUsers,
+    setUsersAsAdmins: dashboardSetUsersAsAdmins,
     getAdministrators: dashboardGetAdministrators
   }
 }

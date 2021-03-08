@@ -15,6 +15,7 @@ type AccountType = {
 }
 
 function Administrators() {
+  const [ selectedBulkOption, setSelectedBulkOption ] = useState<'Select an option' | 'Remove from admin list'>('Select an option')
   const [ accounts, setAccounts ] = useState<AccountType[]>([])
   const [ selectedIDs, setSelectedIDs] = useState<number[]>([])
   const [ isAlreadyLogout, setIsAlreadyLogout ] = useState(false)
@@ -29,18 +30,54 @@ function Administrators() {
         onLogout = {() => setIsAlreadyLogout(true)}
         selectedSection = 'administrators'
       >
+        <div
+          className = 'dashboard_top_navigation'
+        >
+          <select
+            className = 'dashboard_dropdown'
+            disabled = {selectedIDs.length == 0}
+            onChange = {event => setSelectedBulkOption(event.target.value as any)}
+            value = {selectedBulkOption}
+          >
+            <option
+              value = 'Select an option'
+            >
+              Select an option
+            </option>
+
+            <option
+              value = 'Remove from admin list'
+            >
+              Remove from admin list
+            </option>
+          </select>
+
+          <a
+            className = 'dashboard_dropdown_apply_button'
+            href = 'javascript:void(0)'
+            onClick = {applyDropdown}
+            style = {{
+              backgroundColor: selectedIDs.length == 0 || selectedBulkOption == 'Select an option' ? 'gray' : 'green',
+              pointerEvents: selectedIDs.length == 0 || selectedBulkOption == 'Select an option' ? 'none' : 'auto',
+            }}
+          >
+            Apply
+          </a>
+        </div>
+
         <AccountListItem
           isTheMainRow
           id = 'ID'
-          isChecked = {selectedIDs.length == accounts.length}
+          isHideCheckBox = {accounts.filter(account => account.role != 'superuser').length == 0}
+          isChecked = {selectedIDs.length == accounts.filter(account => account.role != 'superuser').length}
           username = 'Username'
           role = 'Role'
           created_at = 'Created At'
           onIsCheckedChange = {() => {
-            if(selectedIDs.length == accounts.length) {
+            if(selectedIDs.length == accounts.filter(account => account.role != 'superuser').length) {
               setSelectedIDs([])
             } else {
-              setSelectedIDs(accounts.map(account => account.id))
+              setSelectedIDs(accounts.filter(account => account.role != 'superuser').map(account => account.id))
             }
           }}
         />
@@ -49,6 +86,7 @@ function Administrators() {
           accounts.map(account => (
             <AccountListItem
               id = {String(account.id)}
+              isHideCheckBox = {account.role == 'superuser'}
               isChecked = {selectedIDs.includes(account.id)}
               onIsCheckedChange = {() => {
                 const newSelectedIDs = JSON.parse(JSON.stringify(selectedIDs)) as number[]
@@ -98,6 +136,10 @@ function Administrators() {
     } else {
       console.log(res.Text || res.error.toString())
     }
+  }
+
+  function applyDropdown() {
+
   }
 }
 
