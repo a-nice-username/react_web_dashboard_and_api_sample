@@ -38,6 +38,7 @@ function Login() {
         </h2>
 
         <input
+          autoCapitalize = 'none'
           className = 'dialog-box-input'
           onChange = {event => setUsername(event.target.value)}
           placeholder = 'Username'
@@ -45,6 +46,7 @@ function Login() {
         />
 
         <input
+          autoCapitalize = 'none'
           className = 'dialog-box-input'
           onChange = {event => setPassword(event.target.value)}
           placeholder = 'Password'

@@ -29,6 +29,7 @@ function Register() {
         </h2>
 
         <input
+          autoCapitalize = 'none'
           className = 'dialog-box-input'
           onChange = {event => setUsername(event.target.value)}
           placeholder = 'Username'
@@ -36,6 +37,7 @@ function Register() {
         />
 
         <input
+          autoCapitalize = 'none'
           className = 'dialog-box-input'
           onChange = {event => setPassword(event.target.value)}
           placeholder = 'Password'
@@ -44,6 +46,7 @@ function Register() {
         />
 
         <input
+          autoCapitalize = 'none'
           className = 'dialog-box-input'
           onChange = {event => setConfirmPassword(event.target.value)}
           placeholder = 'Confirm Password'

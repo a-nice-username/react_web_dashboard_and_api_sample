@@ -94,6 +94,7 @@ function AddAPicture(props: PropsType) {
               </a>
 
               <input
+                autoCapitalize = 'sentences'
                 className = 'add-a-picture-dialog-box-input'
                 onChange = {event => setTitle(event.target.value)}
                 placeholder = 'Title'
