@@ -110,5 +110,6 @@ export const API = {
   GetAdministrators: () => CustomFetch('GET', '/dashboard/get-administrators', false),
   GetAllPictures: () => CustomFetch('GET', '/dashboard/get-all-pictures', false),
   DeletePictures: (params: DeletePicturesParamsType) => CustomFetch('POST', '/dashboard/delete-pictures', false, params),
-  DeleteAccounts: (params: DeleteAccountsParamsType) => CustomFetch('POST', '/dashboard/delete-accounts', false, params)
+  DeleteAccounts: (params: DeleteAccountsParamsType) => CustomFetch('POST', '/dashboard/delete-accounts', false, params),
+  Summary: () => CustomFetch('GET', '/dashboard/summary', false)
 }

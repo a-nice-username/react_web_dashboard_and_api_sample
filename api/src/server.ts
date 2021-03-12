@@ -35,5 +35,6 @@ app.get('/dashboard/get-administrators', db.dashboard.getAdministrators)
 app.get('/dashboard/get-all-pictures', db.dashboard.getAllPictures)
 app.post('/dashboard/delete-accounts', db.dashboard.deleteAccounts)
 app.post('/dashboard/delete-pictures', db.dashboard.deletePictures)
+app.get('/dashboard/summary', db.dashboard.summary)
 
 app.listen(port, () => console.log(`App running on port ${port}.`))

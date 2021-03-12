@@ -108,7 +108,7 @@ function Users() {
               }}
               username = {account.username}
               role = {account.role}
-              created_at = {format(new Date(account.created_at), 'dd MMMM yyyy, hh:mm')}
+              created_at = {format(new Date(account.created_at), 'dd MMMM yyyy, HH:mm')}
             />
           ))
         }

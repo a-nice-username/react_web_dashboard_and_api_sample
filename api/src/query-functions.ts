@@ -1,6 +1,7 @@
 import { Request, Response } from 'express'
 
 import { Pool } from 'pg'
+import { format } from 'date-fns'
 
 import giveResponse from './helpers/give-response'
 
@@ -592,6 +593,76 @@ const dashboardDeleteAccounts = (req: Request, res: Response) => {
   )
 }
 
+const dashboardSummary = (req: Request, res: Response) => {
+  let data = {}
+
+  pool.query(
+    `SELECT * FROM accounts`,
+    [],
+    (err, results) => {
+      if(err) {
+        giveResponse(res, 'bad_request', data, err.toString())
+
+        return
+      }
+
+      const users = results.rows
+      const total_users = users.length
+
+      pool.query(
+        `SELECT * FROM pictures`,
+        [],
+        (err, results) => {
+          if(err) {
+            giveResponse(res, 'bad_request', data, err.toString())
+    
+            return
+          }
+
+          const pictures = results.rows
+          const total_pictures = pictures.length
+
+          type GraphDataType = {
+            day: string,
+            total: number
+          }
+
+          const users_week_graph_data = [] as GraphDataType[]
+          const pictures_week_graph_data = [] as GraphDataType[]
+
+          for(let i = 6; i >= 0; i--) {
+            const dateFormatUsed = 'yyyy-MM-dd'
+
+            const date = new Date()
+            date.setDate(date.getDate() - i)
+
+            const day = format(date, dateFormatUsed)
+
+            users_week_graph_data.push({
+              day,
+              total: users.filter(user => format(new Date(user['created_at']), dateFormatUsed) == day).length
+            })
+
+            pictures_week_graph_data.push({
+              day,
+              total: pictures.filter(picture => format(new Date(picture['created_at']), dateFormatUsed) == day).length
+            })
+          }
+
+          data = {
+            total_users,
+            total_pictures,
+            users_week_graph_data,
+            pictures_week_graph_data
+          }
+    
+          giveResponse(res, 'success', data, 'Sukses mendapatkan summary dashboard')
+        }
+      )
+    }
+  )
+}
+
 export default {
   root,
   register,
@@ -609,6 +680,7 @@ export default {
     getAdministrators: dashboardGetAdministrators,
     getAllPictures: dashboardGetAllPictures,
     deleteAccounts: dashboardDeleteAccounts,
-    deletePictures: dashboardDeletePictures
+    deletePictures: dashboardDeletePictures,
+    summary: dashboardSummary
   }
 }

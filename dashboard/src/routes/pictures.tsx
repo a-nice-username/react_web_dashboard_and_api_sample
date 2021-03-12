@@ -105,7 +105,7 @@ function Pictures() {
               owner_id = {String(picture.owner_id)}
               title = {picture.title}
               url = {picture.url}
-              created_at = {format(new Date(picture.created_at), 'dd MMMM yyyy, hh:mm')}
+              created_at = {format(new Date(picture.created_at), 'dd MMMM yyyy, HH:mm')}
             />
           ))
         }
