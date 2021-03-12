@@ -1,6 +1,7 @@
-CREATE TABLE users (
+CREATE TABLE accounts (
   id SERIAL PRIMARY KEY,
   username VARCHAR(20) UNIQUE NOT NULL,
   password VARCHAR(40) NOT NULL,
+  role VARCHAR(20) NOT NULL,
   created_at TIMESTAMP NOT NULL DEFAULT NOW()
 );

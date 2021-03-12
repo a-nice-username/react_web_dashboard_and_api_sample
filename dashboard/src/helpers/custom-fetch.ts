@@ -98,11 +98,17 @@ type DeleteAccountsParamsType = {
   IDs: string
 }
 
+type DeletePicturesParamsType = {
+  IDs: string
+}
+
 export const API = {
-  CheckAccountRole: (params: CheckAccountRoleParamsType) => CustomFetch('GET', '/check-account-role', false, params),
-  ChangeAccountsRole: (params: ChangeAccountsRoleParamsType) => CustomFetch('POST', '/change-accounts-role', false, params),
-  DeleteAccounts: (params: DeleteAccountsParamsType) => CustomFetch('POST', '/delete-accounts', false, params),
+  CheckAccountRole: (params: CheckAccountRoleParamsType) => CustomFetch('GET', '/dashboard/check-account-role', false, params),
+  ChangeAccountsRole: (params: ChangeAccountsRoleParamsType) => CustomFetch('POST', '/dashboard/change-accounts-role', false, params),
   Login: (params: LoginParamsType) => CustomFetch('POST', '/dashboard/login', false, params),
   GetUsers: () => CustomFetch('GET', '/dashboard/get-users', false),
-  GetAdministrators: () => CustomFetch('GET', '/dashboard/get-administrators', false)
+  GetAdministrators: () => CustomFetch('GET', '/dashboard/get-administrators', false),
+  GetAllPictures: () => CustomFetch('GET', '/dashboard/get-all-pictures', false),
+  DeletePictures: (params: DeletePicturesParamsType) => CustomFetch('POST', '/dashboard/delete-pictures', false, params),
+  DeleteAccounts: (params: DeleteAccountsParamsType) => CustomFetch('POST', '/dashboard/delete-accounts', false, params)
 }

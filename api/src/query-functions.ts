@@ -23,51 +23,6 @@ const root = (req: Request, res: Response) => {
   giveResponse(res,'success', data, 'You are currently running @crocodic/api')
 }
 
-const login = (req: Request, res: Response) => {
-  let data = {}
-
-  const { username, password } = req.fields
-
-  if (!username) {
-    giveResponse(res, 'bad_request', data, "Parameter 'username' required")
-
-    return
-  }
-
-  if (!password) {
-    giveResponse(res, 'bad_request', data, "Parameter 'password' required")
-
-    return
-  }
-
-  pool.query(
-    `SELECT * FROM accounts WHERE username = $1`,
-    [username],
-    (err, results) => {
-      if(err) {
-        giveResponse(res, 'bad_request', data, `${err.name} : ${err.message}`)
-
-        return
-      }
-
-      if(results.rows.length > 0) {
-        if(password == results.rows[0].password) {
-          data = {
-            ...results.rows[0],
-            password: undefined
-          }
-
-          giveResponse(res, 'success', data, 'Sukses login')
-        } else {
-          giveResponse(res, 'bad_request', data, 'Password salah')
-        }
-      } else {
-        giveResponse(res, 'not_found', data, `User dengan username '${username}' tidak ditemukan`)
-      }
-    }
-  )
-}
-
 const register = (req: Request, res: Response) => {
   let data = {}
 
@@ -117,6 +72,51 @@ const register = (req: Request, res: Response) => {
             giveResponse(res, 'success', data, `Sukses register dengan username '${username}'`)
           }
         )
+      }
+    }
+  )
+}
+
+const login = (req: Request, res: Response) => {
+  let data = {}
+
+  const { username, password } = req.fields
+
+  if (!username) {
+    giveResponse(res, 'bad_request', data, "Parameter 'username' required")
+
+    return
+  }
+
+  if (!password) {
+    giveResponse(res, 'bad_request', data, "Parameter 'password' required")
+
+    return
+  }
+
+  pool.query(
+    `SELECT * FROM accounts WHERE username = $1`,
+    [username],
+    (err, results) => {
+      if(err) {
+        giveResponse(res, 'bad_request', data, `${err.name} : ${err.message}`)
+
+        return
+      }
+
+      if(results.rows.length > 0) {
+        if(password == results.rows[0].password) {
+          data = {
+            ...results.rows[0],
+            password: undefined
+          }
+
+          giveResponse(res, 'success', data, 'Sukses login')
+        } else {
+          giveResponse(res, 'bad_request', data, 'Password salah')
+        }
+      } else {
+        giveResponse(res, 'not_found', data, `User dengan username '${username}' tidak ditemukan`)
       }
     }
   )
@@ -264,6 +264,36 @@ const addAPicture = (req: Request, res: Response) => {
   )
 }
 
+const checkIfAccountExist = (req: Request, res: Response) => {
+  let data = {}
+
+  const { ID } = req.query
+
+  if (!ID) {
+    giveResponse(res, 'bad_request', data, "Parameter 'ID' required")
+
+    return
+  }
+
+  pool.query(
+    `SELECT * FROM accounts WHERE id = $1`,
+    [ID],
+    (err, results) => {
+      if(err) {
+        giveResponse(res, 'bad_request', data, err.toString())
+
+        return
+      }
+
+      if(results.rows.length != 0) {
+        giveResponse(res, 'success', data, 'Akun eksis')
+      } else {
+        giveResponse(res, 'not_found', data, `Akun dengan id '${ID}' tidak eksis`)
+      }
+    }
+  )
+}
+
 const dashboardLogin = (req: Request, res: Response) => {
   let data = {}
 
@@ -367,7 +397,112 @@ const dashboardGetAdministrators = (req: Request, res: Response) => {
   )
 }
 
-const changeAccountsRole = (req: Request, res: Response) => {
+const dashboardGetAllPictures = (req: Request, res: Response) => {
+  let data = [] as any[]
+
+  pool.query(
+    `SELECT * FROM pictures`,
+    [],
+    (err, results) => {
+      if(err) {
+        giveResponse(res, 'bad_request', data, err.toString())
+
+        return
+      }
+
+      data = results.rows.map(row => ({
+        ...row,
+        url: req.protocol + '://' + req.get('host') + row.url
+      }))
+
+      giveResponse(res, 'success', data, 'Sukses mendapatkan gambar - gambar')
+    }
+  )
+}
+
+const dashboardDeletePictures = (req: Request, res: Response) => {
+  let data = {}
+
+  const { IDs } = req.fields
+
+  if (!IDs) {
+    giveResponse(res, 'bad_request', data, "Parameter 'IDs' required")
+
+    return
+  }
+
+  pool.query(
+    `SELECT * FROM pictures WHERE id IN (${IDs})`,
+    [],
+    (err, results) => {
+      if(err) {
+        giveResponse(res, 'bad_request', data, err.toString())
+
+        return
+      }
+
+      for(const row of results.rows) {
+        const path = `.${row.url}`
+
+        if(fs.existsSync(path)) {
+          fs.unlink(path)
+        }
+      }
+
+      pool.query(
+        `DELETE FROM pictures WHERE id IN (${IDs})`,
+        [],
+        (err, results) => {
+          if(err) {
+            giveResponse(res, 'bad_request', data, err.toString())
+    
+            return
+          }
+    
+          giveResponse(res, 'success', data, 'Sukses menghapus gambar - gambar')
+        }
+      )
+    }
+  )
+}
+
+const dashboardCheckAccountRole = (req: Request, res: Response) => {
+  let data = {}
+
+  const { ID } = req.query
+
+  if (!ID) {
+    giveResponse(res, 'bad_request', data, "Parameter 'ID' required")
+
+    return
+  }
+
+  pool.query(
+    `SELECT * FROM accounts WHERE id = $1`,
+    [ID],
+    (err, results) => {
+      if(err) {
+        giveResponse(res, 'bad_request', data, err.toString())
+
+        return
+      }
+
+      if(results.rows.length != 0) {
+        const { role } = results.rows[0]
+
+        data = {
+          role
+        }
+
+        giveResponse(res, 'success', data, 'Sukses mendapat role akun')
+      } else {
+        giveResponse(res, 'not_found', data, `Akun tidak dengan id '${ID}' ditemukan`)
+      }
+    }
+  )
+}
+
+const dashboardChangeAccountsRole = (req: Request, res: Response) => {
   let data = {}
 
   const { IDs, role } = req.fields
@@ -399,7 +534,7 @@ const changeAccountsRole = (req: Request, res: Response) => {
   )
 }
 
-const deleteAccounts = (req: Request, res: Response) => {
+const dashboardDeleteAccounts = (req: Request, res: Response) => {
   let data = {}
 
   const { IDs } = req.fields
@@ -457,87 +592,23 @@ const deleteAccounts = (req: Request, res: Response) => {
   )
 }
 
-const checkIfAccountExist = (req: Request, res: Response) => {
-  let data = {}
-
-  const { ID } = req.query
-
-  if (!ID) {
-    giveResponse(res, 'bad_request', data, "Parameter 'ID' required")
-
-    return
-  }
-
-  pool.query(
-    `SELECT * FROM accounts WHERE id = $1`,
-    [ID],
-    (err, results) => {
-      if(err) {
-        giveResponse(res, 'bad_request', data, err.toString())
-
-        return
-      }
-
-      if(results.rows.length != 0) {
-        giveResponse(res, 'success', data, 'Akun eksis')
-      } else {
-        giveResponse(res, 'not_found', data, `Akun dengan id '${ID}' tidak eksis`)
-      }
-    }
-  )
-}
-
-const checkAccountRole = (req: Request, res: Response) => {
-  let data = {}
-
-  const { ID } = req.query
-
-  if (!ID) {
-    giveResponse(res, 'bad_request', data, "Parameter 'ID' required")
-
-    return
-  }
-
-  pool.query(
-    `SELECT * FROM accounts WHERE id = $1`,
-    [ID],
-    (err, results) => {
-      if(err) {
-        giveResponse(res, 'bad_request', data, err.toString())
-
-        return
-      }
-
-      if(results.rows.length != 0) {
-        const { role } = results.rows[0]
-
-        data = {
-          role
-        }
-
-        giveResponse(res, 'success', data, 'Sukses mendapat role akun')
-      } else {
-        giveResponse(res, 'not_found', data, `Akun tidak dengan id '${ID}' ditemukan`)
-      }
-    }
-  )
-}
-
 export default {
   root,
-  changeAccountsRole,
-  deleteAccounts,
-  checkIfAccountExist,
-  checkAccountRole,
+  register,
   frontend: {
+    checkIfAccountExist,
     login,
-    register,
     getPictures,
     addAPicture
   },
   dashboard: {
+    checkAccountRole: dashboardCheckAccountRole,
+    changeAccountsRole: dashboardChangeAccountsRole,
     login: dashboardLogin,
     getUsers: dashboardGetUsers,
-    getAdministrators: dashboardGetAdministrators
+    getAdministrators: dashboardGetAdministrators,
+    getAllPictures: dashboardGetAllPictures,
+    deleteAccounts: dashboardDeleteAccounts,
+    deletePictures: dashboardDeletePictures
   }
 }

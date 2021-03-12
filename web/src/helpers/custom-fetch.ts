@@ -105,9 +105,9 @@ type AddAPictureParamsType = {
 }
 
 export const API = {
-  CheckIfAccountExist: (params: CheckIfAccountExistParamsType) => CustomFetch('GET', '/check-if-account-exist', false, params),
+  Register: (params: RegisterParamsType) => CustomFetch('POST', '/register', false, params),
+  CheckIfAccountExist: (params: CheckIfAccountExistParamsType) => CustomFetch('GET', '/frontend/check-if-account-exist', false, params),
   Login: (params: LoginParamsType) => CustomFetch('POST', '/frontend/login', false, params),
-  Register: (params: RegisterParamsType) => CustomFetch('POST', '/frontend/register', false, params),
   GetPictures: (params: GetPicturesParamsType) => CustomFetch('GET', '/frontend/get-pictures', false, params),
   AddAPicture: (params: AddAPictureParamsType) => CustomFetch('POST', '/frontend/add-a-picture', true, params)
 }

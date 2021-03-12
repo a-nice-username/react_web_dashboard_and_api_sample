@@ -177,6 +177,68 @@ a:hover {
   padding: 10px;
 }
 
+.picture_list_item_container {
+  background-color: white;
+  display: flex;
+}
+
+.picture_list_checkbox_container {
+  align-items: center;
+  background-color: silver;
+  display: flex;
+  justify-content: center;
+  min-width: 40px;
+}
+
+.picture_list_item_id_container {
+  align-items: center;
+  display: flex;
+  background-color: white;
+  min-width: 60px;
+  padding: 10px;
+}
+
+.picture_list_item_picture_container {
+  align-items: center;
+  display: flex;
+  background-color: white;
+  min-width: 85px;
+  padding: 10px;
+}
+
+.picture_list_item_picture {
+  align-items: center;
+  display: flex;
+  background-color: gainsboro;
+  height: 50px;
+  object-fit: contain;
+  width: 50px;
+}
+
+.picture_list_item_title_container {
+  align-items: center;
+  display: flex;
+  background-color: white;
+  min-width: 300px;
+  padding: 10px;
+}
+
+.picture_list_item_owner_id_container {
+  align-items: center;
+  display: flex;
+  background-color: white;
+  min-width: 110px;
+  padding: 10px;
+}
+
+.picture_list_item_created_at_container {
+  align-items: center;
+  display: flex;
+  background-color: white;
+  min-width: 235px;
+  padding: 10px;
+}
+
 .loader {
   border: 3px solid darkgray;
   border-top: 3px solid white;
