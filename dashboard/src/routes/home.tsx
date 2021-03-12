@@ -1,13 +1,14 @@
 import { useEffect, useState } from 'react'
 
 import { Redirect } from 'react-router'
+import { useLocation } from 'react-router-dom'
 import { format } from 'date-fns'
+import { Line } from 'react-chartjs-2'
 
 import DashboardFrame from '../components/dashboard-frame'
 import { API } from '../helpers/custom-fetch'
+import { setLocation } from '../references'
 import { validateAccountRoleAccess } from '../helpers/validate-account-role-access'
-
-import { Line } from 'react-chartjs-2'
 
 type GraphDataType = {
   day: string,
@@ -22,6 +23,8 @@ type SummaryType = {
 }
 
 function Home() {
+  setLocation(useLocation())
+
   const [ isAlreadyLogout, setIsAlreadyLogout ] = useState(false)
   const [ summary, setSummary ] = useState<SummaryType>()
 
@@ -36,32 +39,13 @@ function Home() {
         selectedSection = 'dashboard'
       >
         <div
-          style = {{
-            backgroundColor: 'silver',
-            display: 'flex',
-            justifyContent: 'space-evenly',
-            padding: 20
-          }}
+          className = 'dashboard_main_panel_container'
         >
           <div
-            style = {{
-              alignItems: 'center',
-              backgroundColor: 'white',
-              border: '3px solid lightgray',
-              borderRadius: 10,
-              color: 'black',
-              display: 'flex',
-              flexDirection: 'column',
-              minHeight: 120,
-              justifyContent: 'center',
-              minWidth: 120
-            }}
+            className = 'dashboard_main_panel_item_container'
           >
             <div
-              style = {{
-                fontSize: 28,
-                fontWeight: 'bold'
-              }}
+              className = 'dashboard_main_panel_number'
             >
               {summary?.total_users}
             </div>
@@ -72,25 +56,13 @@ function Home() {
           </div>
 
           <div
+            className = 'dashboard_main_panel_item_container'
             style = {{
-              alignItems: 'center',
-              backgroundColor: 'white',
-              border: '3px solid lightgray',
-              borderRadius: 10,
-              color: 'black',
-              display: 'flex',
-              flexDirection: 'column',
-              minHeight: 120,
-              justifyContent: 'center',
-              marginLeft: 20,
-              minWidth: 120
+              marginLeft: 20
             }}
           >
             <div
-              style = {{
-                fontSize: 28,
-                fontWeight: 'bold'
-              }}
+              className = 'dashboard_main_panel_number'
             >
               {summary?.total_pictures}
             </div>
@@ -102,9 +74,7 @@ function Home() {
         </div>
 
         <div
-          style = {{
-            padding: 20
-          }}
+          className = 'dashboard_content_container'
         >
           <Line
             data = {{
@@ -115,7 +85,7 @@ function Home() {
                   data: (summary?.users_week_graph_data || []).map(item => item.total),
                   fill: false,
                   backgroundColor: 'limegreen',
-                  borderColor: 'green',
+                  borderColor: 'green'
                 },
               ]
             }}
@@ -143,7 +113,7 @@ function Home() {
                   data: (summary?.pictures_week_graph_data || []).map(item => item.total),
                   fill: false,
                   backgroundColor: 'violet',
-                  borderColor: 'purple',
+                  borderColor: 'purple'
                 },
               ]
             }}

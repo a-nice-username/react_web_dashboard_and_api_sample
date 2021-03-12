@@ -80,6 +80,11 @@ export const CustomFetch = async(
   return response
 }
 
+type RegisterParamsType = {
+  username: string,
+  password: string
+}
+
 type CheckAccountRoleParamsType = {
   ID: number
 }
@@ -103,6 +108,7 @@ type DeletePicturesParamsType = {
 }
 
 export const API = {
+  Register: (params: RegisterParamsType) => CustomFetch('POST', '/register', false, params),
   CheckAccountRole: (params: CheckAccountRoleParamsType) => CustomFetch('GET', '/dashboard/check-account-role', false, params),
   ChangeAccountsRole: (params: ChangeAccountsRoleParamsType) => CustomFetch('POST', '/dashboard/change-accounts-role', false, params),
   Login: (params: LoginParamsType) => CustomFetch('POST', '/dashboard/login', false, params),

@@ -44,7 +44,11 @@ function AddAPicture(props: PropsType) {
           >
             <div
               className = 'modal-background'
-              onClick = {() => window.history.back()}
+              onClick = {() => {
+                if(!isTryingSubmit) {
+                  window.history.back()
+                }
+              }}
             /> 
             
             <div

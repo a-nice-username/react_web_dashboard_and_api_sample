@@ -123,6 +123,35 @@ a:hover {
   padding: 10px;
 }
 
+.dashboard_main_panel_container {
+  background-color: silver;
+  display: flex;
+  justify-content: space-evenly;
+  padding: 20px;
+}
+
+.dashboard_main_panel_item_container {
+  align-items: center;
+  background-color: white;
+  border: 3px solid lightgray;
+  border-radius: 10px;
+  color: black;
+  display: flex;
+  flex-direction: column;
+  min-height: 120px;
+  justify-content: center;
+  min-width: 120px;
+}
+
+.dashboard_main_panel_number {
+  font-size: 28;
+  font-weight: bold;
+}
+
+.dashboard_content_container {
+  padding: 20px;
+}
+
 .dashboard_dropdown {
   min-height: 35px;
 }
@@ -237,6 +266,65 @@ a:hover {
   background-color: white;
   min-width: 235px;
   padding: 10px;
+}
+
+.dashboard-register-modal-container {
+  align-items: center;
+  display: flex;
+  position: fixed;
+  top: 0;
+  left: 0;
+  bottom: 0;
+  right: 0;
+  justify-content: center;
+}
+
+.dashboard-register-modal-background {
+  align-items: center;
+  background-color: rgba(0, 0, 0, 0.75);
+  display: flex;
+  justify-content: center;
+  position: absolute;
+  top: 0;
+  left: 0;
+  bottom: 0;
+  right: 0;
+  z-index: -1;
+}
+
+.dashboard-register-modal-dialog-box-container {
+  display: flex;
+  flex-direction: column;
+  background-color: rgb(245, 245, 245);
+  border-radius: 5px;
+  padding: 20px;
+  margin-left: 20px;
+  margin-right: 20px;
+  max-width: 275px;
+  width: 100%;
+}
+
+.dashboard-register-modal-dialog-box-title {
+  margin-bottom: 15px;
+}
+
+.dashboard-register-modal-dialog-box-input {
+  margin-top: 5px;
+}
+
+.dashboard-register-modal-dialog-box-submit-button {
+  align-items: center;
+  border-radius: 5px;
+  color: white;
+  display: flex;
+  font-weight: bold;
+  justify-content: center;
+  padding-bottom: 7.5px;
+  padding-left: 10px;
+  padding-right: 10px;
+  padding-top: 7.5px;
+  text-align: center;
+  text-decoration-line: none;
 }
 
 .loader {

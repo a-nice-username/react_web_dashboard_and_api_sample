@@ -1,6 +1,8 @@
 import { ReactNode } from 'react'
 
-import { Link } from 'react-router-dom'
+import { Link, useHistory } from 'react-router-dom'
+
+import { getLocation } from '../references'
 
 type PropsType = {
   selectedSection: 'dashboard' | 'users' | 'administrators' | 'pictures' | 'registerAnAccount',
@@ -9,6 +11,8 @@ type PropsType = {
 }
 
 function DashboardFrame(props: PropsType) {
+  const history = useHistory()
+
   const { children, onLogout, selectedSection } = props
 
   return (
@@ -67,12 +71,20 @@ function DashboardFrame(props: PropsType) {
             OTHER
           </div>
 
-          <Link
+          <a
             className = {selectedSection == 'registerAnAccount' ? 'dashboard_section_selected_item' : 'dashboard_section_item'}
-            to = '/register-an-account'
+            href = 'javascript:void(0)'
+            onClick = {() => {
+              history.push(
+                '/register-an-account',
+                {
+                  background: getLocation()
+                }
+              )
+            }}
           >
             Register An Account
-          </Link>
+          </a>
 
           <a
             className = 'dashboard_section_item'
