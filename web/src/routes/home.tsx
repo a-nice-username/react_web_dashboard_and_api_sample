@@ -20,7 +20,6 @@ type PictureType = {
 }
 
 function Home() {
-  setLocation(useLocation())
   const history = useHistory()
 
   const [ isLoadingPictures, setIsLoadingPictures ] = useState(false)

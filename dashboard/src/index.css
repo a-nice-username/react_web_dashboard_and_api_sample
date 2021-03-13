@@ -268,7 +268,7 @@ a:hover {
   padding: 10px;
 }
 
-.dashboard-register-modal-container {
+.modal-container {
   align-items: center;
   display: flex;
   position: fixed;
@@ -279,7 +279,7 @@ a:hover {
   justify-content: center;
 }
 
-.dashboard-register-modal-background {
+.modal-background {
   align-items: center;
   background-color: rgba(0, 0, 0, 0.75);
   display: flex;
@@ -292,7 +292,7 @@ a:hover {
   z-index: -1;
 }
 
-.dashboard-register-modal-dialog-box-container {
+.modal-dialog-box-container {
   display: flex;
   flex-direction: column;
   background-color: rgb(245, 245, 245);
@@ -304,15 +304,15 @@ a:hover {
   width: 100%;
 }
 
-.dashboard-register-modal-dialog-box-title {
+.modal-dialog-box-title {
   margin-bottom: 15px;
 }
 
-.dashboard-register-modal-dialog-box-input {
+.modal-dialog-box-input {
   margin-top: 5px;
 }
 
-.dashboard-register-modal-dialog-box-submit-button {
+.modal-dialog-box-submit-button {
   align-items: center;
   border-radius: 5px;
   color: white;

@@ -1,13 +1,11 @@
 import { useEffect, useState } from 'react'
 
 import { Redirect } from 'react-router'
-import { useLocation } from 'react-router-dom'
 import { format } from 'date-fns'
 import { Line } from 'react-chartjs-2'
 
 import DashboardFrame from '../components/dashboard-frame'
 import { API } from '../helpers/custom-fetch'
-import { setLocation } from '../references'
 import { validateAccountRoleAccess } from '../helpers/validate-account-role-access'
 
 type GraphDataType = {
@@ -23,8 +21,6 @@ type SummaryType = {
 }
 
 function Home() {
-  setLocation(useLocation())
-
   const [ isAlreadyLogout, setIsAlreadyLogout ] = useState(false)
   const [ summary, setSummary ] = useState<SummaryType>()
 

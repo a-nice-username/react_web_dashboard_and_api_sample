@@ -7,7 +7,9 @@ import Users from './routes/users'
 import Administrators from './routes/administrators'
 import Pictures from './routes/pictures'
 import RegisterAnAccount from './routes/register-an-account'
+import Logout from './routes/logout'
 import Login from './routes/login'
+import { setLocation } from './references'
 
 type LocationStateType = {
   background?: Location
@@ -29,6 +31,8 @@ function Main() {
 
 function RouterContent() {
   const location = useLocation<LocationStateType>()
+  
+  setLocation(location)
   
   const background = location.state && location.state.background
 
@@ -65,6 +69,10 @@ function RouterContent() {
 
       <RegisterAnAccount
         isVisible = {background != undefined && location.pathname == '/register-an-account'}
+      />
+
+      <Logout
+        isVisible = {background != undefined && location.pathname == '/logout'}
       />
     </>
   )

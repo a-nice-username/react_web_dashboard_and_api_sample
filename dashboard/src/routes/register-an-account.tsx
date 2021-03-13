@@ -34,10 +34,10 @@ function RegisterAnAccount(props: PropsType) {
       {
         props.isVisible ?
           <div
-            className = 'dashboard-register-modal-container'
+            className = 'modal-container'
           >
             <div
-              className = 'dashboard-register-modal-background'
+              className = 'modal-background'
               onClick = {() => {
                 if(!isTryingRegister) {
                   window.history.back()
@@ -46,17 +46,17 @@ function RegisterAnAccount(props: PropsType) {
             /> 
             
             <div
-              className = 'dashboard-register-modal-dialog-box-container'
+              className = 'modal-dialog-box-container'
             >
               <h2
-                className = 'dashboard-register-modal-dialog-box-title'
+                className = 'modal-dialog-box-title'
               >
                 Register An Account
               </h2>
 
               <input
                 autoCapitalize = 'none'
-                className = 'dashboard-register-modal-dialog-box-input'
+                className = 'modal-dialog-box-input'
                 onChange = {event => setUsername(event.target.value)}
                 placeholder = 'Username'
                 value = {username}
@@ -64,7 +64,7 @@ function RegisterAnAccount(props: PropsType) {
 
               <input
                 autoCapitalize = 'none'
-                className = 'dashboard-register-modal-dialog-box-input'
+                className = 'modal-dialog-box-input'
                 onChange = {event => setPassword(event.target.value)}
                 placeholder = 'Password'
                 type = 'password'
@@ -73,7 +73,7 @@ function RegisterAnAccount(props: PropsType) {
 
               <input
                 autoCapitalize = 'none'
-                className = 'dashboard-register-modal-dialog-box-input'
+                className = 'modal-dialog-box-input'
                 onChange = {event => setConfirmPassword(event.target.value)}
                 placeholder = 'Confirm Password'
                 type = 'password'
@@ -81,7 +81,7 @@ function RegisterAnAccount(props: PropsType) {
               />
 
               <a
-                className = 'dashboard-register-modal-dialog-box-submit-button'
+                className = 'modal-dialog-box-submit-button'
                 href = 'javascript:void(0)'
                 onClick = {register}
                 style = {{

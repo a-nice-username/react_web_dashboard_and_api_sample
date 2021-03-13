@@ -13,7 +13,7 @@ type PropsType = {
 function DashboardFrame(props: PropsType) {
   const history = useHistory()
 
-  const { children, onLogout, selectedSection } = props
+  const { children, selectedSection } = props
 
   return (
     <div
@@ -89,7 +89,14 @@ function DashboardFrame(props: PropsType) {
           <a
             className = 'dashboard_section_item'
             href = 'javascript:void(0)'
-            onClick = {logout}
+            onClick = {() => {
+              history.push(
+                '/logout',
+                {
+                  background: getLocation()
+                }
+              )
+            }}
           >
             Logout
           </a>
@@ -103,14 +110,6 @@ function DashboardFrame(props: PropsType) {
       </div>
     </div>
   )
-
-  function logout() {
-    localStorage.removeItem('LOGIN_DATA')
-
-    if(onLogout) {
-      onLogout()
-    }
-  }
 }
 
 export default DashboardFrame
