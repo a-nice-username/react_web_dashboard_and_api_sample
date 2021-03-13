@@ -7,6 +7,7 @@ import Register from './routes/register'
 import Home from './routes/home'
 import Options from './routes/options'
 import AddPicture from './routes/add-a-picture'
+import { setLocation } from './references'
 
 type LocationStateType = {
   background?: Location
@@ -28,6 +29,8 @@ function Main() {
 
 function RouterContent() {
   const location = useLocation<LocationStateType>()
+
+  setLocation(location)
   
   const background = location.state && location.state.background
 
