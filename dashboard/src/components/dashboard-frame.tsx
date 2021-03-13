@@ -1,8 +1,13 @@
 import { ReactNode } from 'react'
 
-import { Link, useHistory } from 'react-router-dom'
+import { useHistory } from 'react-router-dom'
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
+import { library } from '@fortawesome/fontawesome-svg-core'
+import { faChartLine, faUser, faUserTie, faImages, faUserPlus, faSignOutAlt } from '@fortawesome/free-solid-svg-icons'
 
 import { getLocation } from '../references'
+
+library.add(faChartLine, faUser, faUserTie, faImages, faUserPlus, faSignOutAlt)
 
 type PropsType = {
   selectedSection: 'dashboard' | 'users' | 'administrators' | 'pictures' | 'registerAnAccount',
@@ -37,33 +42,81 @@ function DashboardFrame(props: PropsType) {
             MAIN NAVIGATION
           </div>
 
-          <Link
+          <a
             className = {selectedSection == 'dashboard' ? 'dashboard_section_selected_item' : 'dashboard_section_item'}
-            to = '/'
+            href = '/'
           >
-            Dashboard
-          </Link>
+            <div
+              className = 'dashboard_section_item_icon'
+            >
+              <FontAwesomeIcon
+                icon = 'chart-line'
+              />
+            </div>
 
-          <Link
+            <div
+              className = 'dashboard_section_item_text'
+            >
+              Dashboard
+            </div>
+          </a>
+
+          <a
             className = {selectedSection == 'users' ? 'dashboard_section_selected_item' : 'dashboard_section_item'}
-            to = '/users'
+            href = '/users'
           >
-            Users
-          </Link>
+            <div
+              className = 'dashboard_section_item_icon'
+            >
+              <FontAwesomeIcon
+                icon = 'user'
+              />
+            </div>
 
-          <Link
+            <div
+              className = 'dashboard_section_item_text'
+            >
+              Users
+            </div>
+          </a>
+
+          <a
             className = {selectedSection == 'administrators' ? 'dashboard_section_selected_item' : 'dashboard_section_item'}
-            to = '/administrators'
+            href = '/administrators'
           >
-            Administrators
-          </Link>
+            <div
+              className = 'dashboard_section_item_icon'
+            >
+              <FontAwesomeIcon
+                icon = 'user-tie'
+              />
+            </div>
 
-          <Link
+            <div
+              className = 'dashboard_section_item_text'
+            >
+              Administrators
+            </div>
+          </a>
+
+          <a
             className = {selectedSection == 'pictures' ? 'dashboard_section_selected_item' : 'dashboard_section_item'}
-            to = '/pictures'
+            href = '/pictures'
           >
-            Pictures
-          </Link>
+            <div
+              className = 'dashboard_section_item_icon'
+            >
+              <FontAwesomeIcon
+                icon = 'images'
+              />
+            </div>
+
+            <div
+              className = 'dashboard_section_item_text'
+            >
+              Pictures
+            </div>
+          </a>
 
           <div
             className = 'dashboard_section'
@@ -83,7 +136,19 @@ function DashboardFrame(props: PropsType) {
               )
             }}
           >
-            Register An Account
+            <div
+              className = 'dashboard_section_item_icon'
+            >
+              <FontAwesomeIcon
+                icon = 'user-plus'
+              />
+            </div>
+
+            <div
+              className = 'dashboard_section_item_text'
+            >
+              Register An Account
+            </div>
           </a>
 
           <a
@@ -98,7 +163,19 @@ function DashboardFrame(props: PropsType) {
               )
             }}
           >
-            Logout
+            <div
+              className = 'dashboard_section_item_icon'
+            >
+              <FontAwesomeIcon
+                icon = 'sign-out-alt'
+              />
+            </div>
+
+            <div
+              className = 'dashboard_section_item_text'
+            >
+              Logout
+            </div>
           </a>
         </div>
       </div>
@@ -106,6 +183,12 @@ function DashboardFrame(props: PropsType) {
       <div
         className = 'dashboard_children_container'
       >
+        <h2
+          className = 'dashboard_mobile_title'
+        >
+          Pictures App
+        </h2>
+        
         {children}
       </div>
     </div>

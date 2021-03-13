@@ -75,6 +75,18 @@ a:hover {
   padding: 20px;
 }
 
+.dashboard_mobile_title {
+  background-color: deepskyblue;
+  color: white;
+  display: none;
+  height: 70px;
+  position: fixed;
+  text-align: center;
+  left: 65px;
+  right: 0px;
+  top: 0px;
+}
+
 .dashboard_side_bar_content {
   display: flex;
   flex-direction: column;
@@ -92,6 +104,7 @@ a:hover {
 .dashboard_section_item {
   background-color: rgba(255, 255, 255, 0.05);
   color: darkgray;
+  display: flex;
   padding-top: 10px;
   padding-bottom: 10px;
   padding-left: 20px;
@@ -102,11 +115,21 @@ a:hover {
 .dashboard_section_selected_item {
   background-color: rgba(255, 255, 255, 0.15);
   color: white;
+  display: flex;
   padding-top: 10px;
   padding-bottom: 10px;
   padding-left: 20px;
   padding-right: 20px;
   text-decoration-line: none;
+}
+
+.dashboard_section_item_text {
+  display: block;
+  margin-left: 10px;
+}
+
+.dashboard_section_item_icon {
+  font-size: 18px;
 }
 
 .dashboard_children_container {
@@ -138,9 +161,9 @@ a:hover {
   color: black;
   display: flex;
   flex-direction: column;
-  min-height: 120px;
+  min-height: 100px;
   justify-content: center;
-  min-width: 120px;
+  min-width: 100px;
 }
 
 .dashboard_main_panel_number {
@@ -340,4 +363,36 @@ a:hover {
 @keyframes spin {
   0% { transform: rotate(0deg); }
   100% { transform: rotate(360deg); }
+}
+
+@media screen and (max-width: 725px) {
+  .dashboard_side_bar {
+    min-width: 65px;
+  }
+
+  .dashboard_children_container {
+    left: 65px;
+  }
+
+  .dashboard_side_bar_title {
+    display: none;
+  }
+
+  .dashboard_mobile_title {
+    align-items: center;
+    display: flex;
+    justify-content: center;
+  }
+
+  .dashboard_section {
+    display: none;
+  }
+
+  .dashboard_section_item_text {
+    display: none;
+  }
+
+  .dashboard_children_container {
+    top: 70px;
+  }
 }
